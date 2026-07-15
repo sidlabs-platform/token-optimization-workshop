@@ -1,0 +1,3 @@
+Budget: cap overage at 15%. Use Auto mode by default. Reload only changed files or a 10-line
+summary. Stop and report if another broad context load is needed. Focus on incident severity and
+dedupe paths only.

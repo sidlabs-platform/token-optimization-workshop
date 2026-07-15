@@ -1,0 +1,17 @@
+{
+  "name": "@sentinelops/deck",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Workshop slide deck (reveal.js for presenting, md-to-pdf for export).",
+  "scripts": {
+    "build": "node build.mjs",
+    "build:pptx": "node build-pptx.mjs",
+    "build:talk": "node build-talk-script.mjs",
+    "build:all": "node build.mjs && node build-pptx.mjs && node build-talk-script.mjs",
+    "present": "node -e \"import('node:child_process').then(cp=>cp.spawn(process.platform==='win32'?'python':'python3',['-m','http.server','8088'],{stdio:'inherit'}))\""
+  },
+  "dependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}

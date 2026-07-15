@@ -1,0 +1,3 @@
+Explain the incident-ingestion flow in SentinelOps end to end: what happens to an incoming
+incident payload from the moment it hits the API until it is stored. Read whatever source
+files you need to be sure you have the full picture.

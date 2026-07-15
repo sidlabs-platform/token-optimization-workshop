@@ -1,0 +1,8 @@
+{
+  "task": "Ask Copilot to diagnose a SentinelOps test failure from shell output.",
+  "quality_check": "Both answers must preserve SentinelOps constraints: TypeScript incident dashboard context, app/packages/api paths when relevant, severity/deduplication accuracy, and no invented behavior.",
+  "model": "claude-sonnet-4.5",
+  "technique": "Power-user trimming: scripts summarize noisy tool output before context injection.",
+  "expected": "Same failure signal with fewer input tokens.",
+  "requires": []
+}

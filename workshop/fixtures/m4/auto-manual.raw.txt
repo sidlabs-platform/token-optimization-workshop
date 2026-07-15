@@ -1,0 +1,8 @@
+[Manually babysitting the model tier inside every prompt]
+Use Claude Opus 4.8 for this next part because it is important. Actually, wait — for the simple
+lookup of the field name, switch down to the Haiku small model to save money, then switch back up
+to Opus for the reasoning, but only if the reasoning is hard, otherwise use Sonnet. For the tests
+use Sonnet, but if a test is tricky escalate to Opus, then remember to switch back down to Sonnet
+or Haiku for the mechanical edits. Before each step, tell me which model you are on and why, and
+confirm you switched. If you are unsure which model to use, ask me first and I will decide. Repeat
+this model-selection preamble at the start of every single turn so we never lose track.

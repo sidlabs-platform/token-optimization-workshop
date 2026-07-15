@@ -1,0 +1,5 @@
+Compacted SentinelOps session summary for one task only:
+Goal: add `minSeverity` to GET /api/incidents.
+Relevant files: `app/packages/shared/src/types/severity.ts` for severity ordering, `app/packages/shared/src/types/filters.ts` for query types, `app/packages/api/src/routes/incidents.ts` for filtering.
+Decision: order is low < medium < high < critical; `minSeverity=high` returns high and critical. Existing exact `severity` filter must keep working.
+Next action: add route tests covering high => high+critical and exact severity compatibility.

@@ -1,0 +1,11 @@
+<task>Add a severity filter to the incidents table.</task>
+<context>
+web/src/components/IncidentsTable.tsx renders all incidents (no filter).
+severity ∈ {critical,high,medium,low,info}. Dark-theme Tailwind. Tests: Vitest.
+</context>
+<constraints>
+- Add <select> (default "all"); filter incidents by severity client-side.
+- Match existing dark-theme classes.
+- Add 2 tests: "critical" shows only critical; "all" shows all.
+- Surgical edit; do not touch unrelated files.
+</constraints>

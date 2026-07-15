@@ -1,0 +1,33 @@
+# AGENTS.md — SentinelOps Repository Guide
+
+SentinelOps is a software project. It contains source code, tests, documentation, package files,
+configuration files, scripts, and a Git history. The application is an incident dashboard written
+with TypeScript for the main app and Python for some tools. The API lives in `app/packages/api` and
+the web interface lives in `app/packages/web`. Incidents have titles, service identifiers, severity
+values, timestamps, tags, statuses, and duplicate counts. The code should be clean, readable,
+maintainable, and well tested.
+
+Agents should inspect the repository before making changes. Agents should use descriptive variable
+names, avoid unnecessary edits, keep formatting consistent, run tests when changing code, and avoid
+committing secrets. TypeScript code should compile. Python code should be formatted. Markdown should
+be clear. JSON should be valid. YAML indentation matters. Use Git carefully. Prefer small changes.
+Do not break existing behavior.
+
+This repository uses package managers. It may contain npm scripts, lockfiles, tsconfig files,
+Vitest tests, ESLint settings, pyproject files, and scripts. Read those files to learn exact
+commands. The API package includes incident ingestion, deduplication, severity handling, and MCP
+integration. The dashboard displays incident lists, filters, charts, and details. Shared types are
+used across packages.
+
+When implementing features, first understand the request, then search for relevant files, then edit
+files, then test. When fixing bugs, reproduce the bug, identify root cause, make a targeted fix,
+and verify. When writing docs, keep them concise. When using tools, prefer the right tool for the
+job. When reviewing, look for correctness, security, and maintainability.
+
+Special notes: use uv rather than pip for Python dependency operations. Production deploy commands
+only work on the corporate VPN. Do not touch auth or SSO code without owner approval because it is
+shared with the customer portal. Preserve incident dedupe fingerprints in API migrations.
+
+The application is called SentinelOps. It is an incident dashboard. It uses TypeScript. It has an
+API package. It has a web package. It has tests. It has scripts. Agents should be helpful,
+careful, concise, and accurate.

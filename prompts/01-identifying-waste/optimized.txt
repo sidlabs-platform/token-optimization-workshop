@@ -1,0 +1,7 @@
+Read ONLY these two files:
+- app/packages/api/src/routes/incidents.ts
+- app/packages/shared/src/types/incident.ts
+
+Then summarize the incidents feature: the REST endpoints for incidents, the query filters
+the incidents list endpoint supports, and the fields an incident record has. Do not read any
+other files.

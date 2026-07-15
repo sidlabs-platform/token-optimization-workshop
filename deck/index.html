@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Token Optimization with GitHub Copilot</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/night.css" id="theme" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/monokai.css" />
+    <style>
+      .reveal h1, .reveal h2, .reveal h3 { color: #58a6ff; text-transform: none; }
+      .reveal .slides section { text-align: left; }
+      .reveal table { font-size: 0.7em; }
+      .reveal code { color: #79c0ff; }
+      .reveal blockquote { border-left: 4px solid #58a6ff; }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <!-- Slides are authored in slides.md and rendered here.
+           Serve this folder (npm run present) then open http://localhost:8088 -->
+      <div class="slides">
+        <section
+          data-markdown="slides.md"
+          data-separator="^\r?\n## "
+          data-separator-vertical="^\r?\n### "
+          data-charset="utf-8"
+        ></section>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/markdown/markdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/highlight.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: "c/t",
+        plugins: [RevealMarkdown, RevealHighlight],
+      });
+    </script>
+  </body>
+</html>

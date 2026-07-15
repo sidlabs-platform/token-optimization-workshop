@@ -1,0 +1,11 @@
+# Keep shell scripts LF so they run on macOS/Linux even when checked out on Windows.
+*.sh text eol=lf
+# PowerShell scripts stay CRLF-friendly.
+*.ps1 text
+*.mjs text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.json text eol=lf
+*.md text
+# Fixtures must stay byte-stable (LF) so measured token counts are reproducible.
+fixtures/**/*.txt text eol=lf

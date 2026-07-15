@@ -1,0 +1,1 @@
+Think briefly, then answer concisely: In SentinelOps, should severity "high" page on-call? Mention how critical, high, medium, and low differ.

@@ -1,0 +1,6 @@
+In the app/ directory, run the shared package's test suite and the api package's
+type-check using the plain commands:
+- npx vitest run --reporter verbose   (in app/packages/shared)
+- npx tsc --noEmit -p packages/api/tsconfig.json   (in app)
+
+Show me the results and tell me whether everything passes and how many tests ran.

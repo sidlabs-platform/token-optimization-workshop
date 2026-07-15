@@ -1,0 +1,8 @@
+{
+  "task": "Discover how to add minSeverity to the SentinelOps incidents endpoint.",
+  "quality_check": "Both outputs must identify the incidents route, severity ordering, filter types, route tests, and the need to preserve exact severity filtering.",
+  "model": "claude-sonnet-4.5",
+  "technique": "Use subagents as a compression boundary: worker reads many files, parent receives a small operational digest.",
+  "expected": "Optimized uses fewer parent input (↑) tokens by replacing raw file bodies with a compact subagent summary.",
+  "requires": []
+}

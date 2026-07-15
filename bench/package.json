@@ -1,0 +1,20 @@
+{
+  "name": "@sentinelops/bench",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Token-optimization measurement harness (tokens, Effective Tokens, cost).",
+  "bin": {
+    "sw-tokens": "./token-count.mjs",
+    "sw-et": "./et.mjs",
+    "sw-cost": "./cost.mjs",
+    "sw-compare": "./compare.mjs",
+    "sw-report": "./report.mjs"
+  },
+  "scripts": {
+    "selftest": "node selftest.mjs"
+  },
+  "dependencies": {
+    "gpt-tokenizer": "^2.9.0"
+  }
+}

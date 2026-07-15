@@ -1,0 +1,8 @@
+# AGENTS.md — landmines only
+
+- Python deps: use `uv`, not `pip`.
+- Production deploys require corporate VPN.
+- Do not touch auth/SSO without owner approval.
+- API migrations must preserve incident dedupe fingerprints.
+
+Infer commands, stack, and style from repo files.

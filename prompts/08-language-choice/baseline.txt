@@ -1,0 +1,1 @@
+Please plan a safe fix for the SentinelOps incident deduplication regression. Por favor, planifica una corrección segura para la regresión de deduplicación de incidentes. Veuillez planifier un correctif sûr pour la déduplication des incidents. Inspect ingestIncident.ts, keep serviceId+title+severity stable, add a regression test, and avoid unrelated route changes.

@@ -1,0 +1,12 @@
+<task>Plan (do not write code) how to add a `minSeverity` query param to GET /api/incidents
+that returns incidents at the given severity or higher.</task>
+<context>
+Severity order + guards: app/packages/shared/src/types/severity.ts
+Incidents route + filtering: app/packages/api/src/routes/incidents.ts
+Filter types: app/packages/shared/src/types/filters.ts
+</context>
+<constraints>
+- List the exact files to change and the specific edit in each.
+- Reuse the existing severity ordering; do not invent a new scale.
+- Keep the existing `severity` (exact match) param working.
+</constraints>

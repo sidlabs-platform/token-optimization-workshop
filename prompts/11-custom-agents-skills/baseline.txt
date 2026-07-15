@@ -1,0 +1,1 @@
+Always load all SentinelOps rules: API architecture, dashboard UI, incident dedupe, security review, release notes, database migrations, accessibility, chart styling, test strategy, dependency policy, and code review checklist before every turn.

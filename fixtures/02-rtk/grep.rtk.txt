@@ -1,0 +1,153 @@
+.\packages\web\src\api\client.ts:21:  if (filters.severity) params.set('severity', filters.severity);
+.\packages\shared\src\validators.ts:2:import { isSeverity } from './types/severity';
+.\packages\shared\src\validators.ts:9:  if (!isSeverity(payload.severity))
+.\packages\shared\src\validators.ts:10:    issues.push({ field: 'severity', message: 'severity must be critical, high, medium, or low' });
+.\packages\web\src\store\api.ts:9:  if (filters.severity) params['severity'] = filters.severity;
+.\packages\web\src\store\filtersSlice.ts:2:import type { IncidentFilters, Severity } from '@sentinelops/shared';
+.\packages\web\src\store\filtersSlice.ts:5:  severity: Severity | undefined;
+.\packages\web\src\store\filtersSlice.ts:10:  severity: undefined,
+.\packages\web\src\store\filtersSlice.ts:18:    setSeverity(state, action: PayloadAction<Severity | undefined>) {
+.\packages\web\src\store\filtersSlice.ts:19:      state.severity = action.payload;
+.\packages\web\src\store\filtersSlice.ts:25:      state.severity = undefined;
+.\packages\web\src\store\filtersSlice.ts:31:export const { setSeverity, setSearch, resetFilters } = filtersSlice.actions;
+.\packages\web\src\store\filtersSlice.ts:35:  if (state.filters.severity) filters.severity = state.filters.severity;
+.\packages\web\src\store\filtersSlice.ts:41:export function selectSeverity(state: { filters: FiltersState }): Severity | undefined {
+.\packages\web\src\store\filtersSlice.ts:42:  return state.filters.severity;
+.\packages\shared\src\index.ts:1:export * from './types/severity';
+.\packages\api\src\ingestion\ingestIncident.test.ts:11:        severity: 'critical',
+.\packages\api\src\ingestion\ingestIncident.test.ts:23:      severity: 'high',
+.\packages\api\src\ingestion\ingestIncident.test.ts:31:    { serviceId: '', title: 'x', severity: 'high' },
+.\packages\api\src\ingestion\ingestIncident.test.ts:32:    { serviceId: 'svc', title: '', severity: 'high' },
+.\packages\api\src\ingestion\ingestIncident.test.ts:33:    { serviceId: 'svc', title: 'x', severity: 'urgent' },
+.\packages\api\src\ingestion\ingestIncident.test.ts:34:    { serviceId: 'svc', title: 'x', severity: 'low', observedAt: 'not-a-date' },
+.\packages\api\src\ingestion\ingestIncident.ts:26:    severity: payload.severity,
+.\packages\api\src\ingestion\ingestIncident.ts:41:    severity: payload.severity as Incident['severity'],
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:7:  selectSeverity,
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:9:  setSeverity,
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:16:  return { filters: { severity: undefined, search: '', ...partial } };
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:22:    expect(state.severity).toBeUndefined();
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:26:  describe('setSeverity', () => {
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:27:    it('sets severity to a valid level', () => {
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:28:      const state = reducer(undefined, setSeverity('critical'));
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:29:      expect(state.severity).toBe('critical');
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:32:    it('clears severity when set to undefined', () => {
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:33:      const prev = reducer(undefined, setSeverity('high'));
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:34:      const state = reducer(prev, setSeverity(undefined));
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:35:      expect(state.severity).toBeUndefined();
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:39:      const state = reducer(undefined, setSeverity(sev));
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:40:      expect(state.severity).toBe(sev);
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:59:      let state = reducer(undefined, setSeverity('medium'));
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:62:      expect(state.severity).toBeUndefined();
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:69:  it('selectSeverity returns current severity', () => {
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:70:    expect(selectSeverity(makeState({ severity: 'high' }))).toBe('high');
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:71:    expect(selectSeverity(makeState())).toBeUndefined();
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:84:    it('includes severity when set', () => {
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:85:      const result = selectFilters(makeState({ severity: 'critical' }));
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:86:      expect(result.severity).toBe('critical');
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:99:    it('combines severity and search filters', () => {
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:100:      const result = selectFilters(makeState({ severity: 'low', search: 'timeout' }));
+.\packages\web\src\store\__tests__\filtersSlice.test.ts:101:      expect(result).toEqual({ severity: 'low', search: 'timeout' });
+.\packages\shared\src\lib\alertDedup.test.ts:12:  severity: 'high' as const,
+.\packages\shared\src\lib\alertDedup.test.ts:18:  fingerprint: createAlertFingerprint({ serviceId: 'svc', title: 'API latency', severity: 'high' }),
+.\packages\shared\src\lib\alertDedup.test.ts:24:      createAlertFingerprint({ serviceId: 'svc', title: 'API latency', severity: 'high' }),
+.\packages\web\src\store\__tests__\store.test.ts:4:import { filtersSlice, resetFilters, selectFilters, setSeverity, setSearch } from '../filtersSlice';
+.\packages\web\src\store\__tests__\store.test.ts:20:    expect(state.filters.severity).toBeUndefined();
+.\packages\web\src\store\__tests__\store.test.ts:24:  it('dispatches setSeverity and reflects in state', () => {
+.\packages\web\src\store\__tests__\store.test.ts:26:    store.dispatch(setSeverity('critical'));
+.\packages\web\src\store\__tests__\store.test.ts:27:    expect(store.getState().filters.severity).toBe('critical');
+.\packages\web\src\store\__tests__\store.test.ts:38:    store.dispatch(setSeverity('high'));
+.\packages\web\src\store\__tests__\store.test.ts:41:    const { severity, search } = store.getState().filters;
+.\packages\web\src\store\__tests__\store.test.ts:42:    expect(severity).toBeUndefined();
+.\packages\web\src\store\__tests__\store.test.ts:48:    store.dispatch(setSeverity('medium'));
+.\packages\web\src\store\__tests__\store.test.ts:51:    expect(filters).toEqual({ severity: 'medium', search: 'cpu' });
+.\packages\web\src\hooks\useIncidentFilters.ts:1:import type { Severity } from '@sentinelops/shared';
+.\packages\web\src\hooks\useIncidentFilters.ts:3:import { selectFilters, selectSearch, selectSeverity, setSearch, setSeverity } from '../store/filtersSlice';
+.\packages\web\src\hooks\useIncidentFilters.ts:7:  const severity = useAppSelector(selectSeverity);
+.\packages\web\src\hooks\useIncidentFilters.ts:13:    severity,
+.\packages\web\src\hooks\useIncidentFilters.ts:14:    setSeverity: (value: Severity | undefined) => dispatch(setSeverity(value)),
+.\packages\api\src\routes\incidents.test.ts:10:    'filters incidents by severity %s',
+.\packages\api\src\routes\incidents.test.ts:11:    async (severity) => {
+.\packages\api\src\routes\incidents.test.ts:12:      const res = await request(createApp()).get(`/api/incidents?severity=${severity}`).expect(200);
+.\packages\api\src\routes\incidents.test.ts:14:      expect(res.body.every((i: any) => i.severity === severity)).toBe(true);
+.\packages\api\src\routes\incidents.ts:2:import { isSeverity, type IncidentFilters, type IncidentStatus } from '@sentinelops/shared';
+.\packages\api\src\routes\incidents.ts:10:    if (typeof req.query.severity === 'string' && isSeverity(req.query.severity))
+.\packages\api\src\routes\incidents.ts:11:      filters.severity = req.query.severity;
+.\packages\shared\src\types\filters.ts:2:import type { Severity } from './severity';
+.\packages\shared\src\types\filters.ts:4:  severity?: Severity;
+.\packages\shared\src\types\filters.ts:10:  return Boolean(filters.severity || filters.serviceId || filters.status || filters.search?.trim());
+.\packages\shared\src\lib\alertDedup.ts:5:  payload: Pick<IncomingIncidentPayload, 'serviceId' | 'title' | 'severity'>,
+.\packages\shared\src\lib\alertDedup.ts:7:  return fingerprint([payload.serviceId, payload.title, payload.severity]);
+.\packages\shared\src\lib\healthScore.ts:3:import { severityRank } from '../types/severity';
+.\packages\shared\src\lib\healthScore.ts:13:    (sum, incident) => sum + severityRank[incident.severity] * 3,
+.\packages\shared\src\utils\query.ts:4:  if (filters.severity && incident.severity !== filters.severity) return false;
+.\packages\shared\src\types\ingestion.ts:2:import type { Severity } from './severity';
+.\packages\shared\src\types\ingestion.ts:7:  severity: Severity | string;
+.\packages\shared\src\types\incident.ts:1:import type { Severity } from './severity';
+.\packages\shared\src\types\incident.ts:8:  severity: Severity;
+.\packages\shared\src\lib\healthScore.test.ts:31:    (severity) => {
+.\packages\shared\src\lib\healthScore.test.ts:38:          severity,
+.\packages\shared\src\lib\healthScore.test.ts:44:          fingerprint: severity,
+.\packages\shared\src\seed\incidents.ts:2:import { severityLevels, type Severity } from '../types/severity';
+.\packages\shared\src\seed\incidents.ts:25:    const severity = severityLevels[(index + rng.int(0, 3)) % severityLevels.length] as Severity;
+.\packages\shared\src\seed\incidents.ts:34:      summary: `${severity} ${symptom} detected on ${service.name}; runbook automation attached deterministic trace ${index}.`,
+.\packages\shared\src\seed\incidents.ts:35:      severity,
+.\packages\shared\src\seed\incidents.ts:38:      tags: [service.id, symptom.replace(/\s+/g, '-'), severity],
+.\packages\shared\src\seed\incidents.ts:41:      fingerprint: fingerprint([service.id, title, severity]),
+.\packages\api\src\routes\stats.test.ts:11:    'includes severity bucket %s',
+.\packages\api\src\routes\stats.test.ts:12:    async (severity) => {
+.\packages\api\src\routes\stats.test.ts:14:      expect(res.body.incidentsBySeverity[severity]).toBeGreaterThan(0);
+.\packages\shared\src\types\service.ts:1:import type { Severity } from './severity';
+.\packages\shared\src\types\service.ts:20:  highestSeverity?: Severity;
+.\packages\shared\src\utils\query.test.ts:8:  severity: 'critical' as const,
+.\packages\shared\src\utils\query.test.ts:19:    { severity: 'critical' as const },
+.\packages\shared\src\utils\query.test.ts:26:    { severity: 'low' as const },
+.\packages\shared\src\utils\query.test.ts:34:    [{ severity: 'high' }, true],
+.\packages\shared\src\types\stats.ts:2:import type { Severity } from './severity';
+.\packages\shared\src\types\stats.ts:7:  incidentsBySeverity: Record<Severity, number>;
+.\packages\shared\src\types\severity.ts:1:export const severityLevels = ['critical', 'high', 'medium', 'low'] as const;
+.\packages\shared\src\types\severity.ts:2:export type Severity = (typeof severityLevels)[number];
+.\packages\shared\src\types\severity.ts:3:export const severityRank: Record<Severity, number> = { critical: 4, high: 3, medium: 2, low: 1 };
+.\packages\shared\src\types\severity.ts:4:export function isSeverity(value: unknown): value is Severity {
+.\packages\shared\src\types\severity.ts:5:  return typeof value === 'string' && (severityLevels as readonly string[]).includes(value);
+.\packages\shared\src\types\severity.ts:7:export function compareSeverity(a: Severity, b: Severity): number {
+.\packages\shared\src\types\severity.ts:8:  return severityRank[b] - severityRank[a];
+.\packages\shared\src\seed\index.ts:4:import { severityRank } from '../types/severity';
+.\packages\shared\src\seed\index.ts:11:    const highestSeverity = active.sort(
+.\packages\shared\src\seed\index.ts:12:      (a, b) => severityRank[b.severity] - severityRank[a.severity],
+.\packages\shared\src\seed\index.ts:13:    )[0]?.severity;
+.\packages\shared\src\seed\index.ts:14:    return highestSeverity
+.\packages\shared\src\seed\index.ts:15:      ? { ...service, activeIncidentCount: active.length, highestSeverity }
+.\packages\shared\src\seed\index.ts:39:    incidentsBySeverity: {
+.\packages\shared\src\seed\index.ts:40:      critical: incidents.filter((i) => i.severity === 'critical').length,
+.\packages\shared\src\seed\index.ts:41:      high: incidents.filter((i) => i.severity === 'high').length,
+.\packages\shared\src\seed\index.ts:42:      medium: incidents.filter((i) => i.severity === 'medium').length,
+.\packages\shared\src\seed\index.ts:43:      low: incidents.filter((i) => i.severity === 'low').length,
+.\packages\shared\src\utils\format.ts:1:import type { Severity } from '../types/severity';
+.\packages\shared\src\utils\format.ts:11:export function severityLabel(severity: Severity): string {
+.\packages\shared\src\utils\format.ts:12:  return titleCase(severity);
+.\packages\web\src\components\IncidentsTable.tsx:3:import { SeverityBadge } from './Badge';
+.\packages\web\src\components\IncidentsTable.tsx:15:              <th className="py-3">Severity</th>
+.\packages\web\src\components\IncidentsTable.tsx:25:                  <SeverityBadge severity={incident.severity} />
+.\packages\web\src\components\Badge.tsx:1:import type { Severity } from '@sentinelops/shared';
+.\packages\web\src\components\Badge.tsx:2:const colors: Record<Severity, string> = {
+.\packages\web\src\components\Badge.tsx:8:export function SeverityBadge({ severity }: { severity: Severity }) {
+.\packages\web\src\components\Badge.tsx:11:      className={`rounded-full px-2 py-1 text-xs font-bold uppercase tracking-widest ring-1 ${colors[severity]}`}
+.\packages\web\src\components\Badge.tsx:13:      {severity}
+.\packages\shared\src\utils\format.test.ts:6:  severityLabel,
+.\packages\shared\src\utils\format.test.ts:15:  ] as const)('formats severity %s', (input, expected) =>
+.\packages\shared\src\utils\format.test.ts:16:    expect(severityLabel(input)).toBe(expected),
+.\packages\web\src\components\ChartsPanel.tsx:5:  const data = Object.entries(stats.incidentsBySeverity).map(([name, value]) => ({ name, value }));
+.\packages\web\src\components\ChartsPanel.tsx:8:      <h2 className="mb-4 text-xl font-black">Severity distribution</h2>
+.\packages\web\src\App.tsx:6:import { SeverityFilter } from './components/SeverityFilter';
+.\packages\web\src\App.tsx:12:  const { filters, severity, setSeverity, search, setSearch } = useIncidentFilters();
+.\packages\web\src\App.tsx:18:        <SeverityFilter value={severity} onChange={setSeverity} />
+.\packages\web\src\components\SeverityFilter.tsx:1:import type { Severity } from '@sentinelops/shared';
+.\packages\web\src\components\SeverityFilter.tsx:2:import { severityLevels } from '@sentinelops/shared';
+.\packages\web\src\components\SeverityFilter.tsx:3:export function SeverityFilter({
+.\packages\web\src\components\SeverityFilter.tsx:7:  value: Severity | undefined;
+.\packages\web\src\components\SeverityFilter.tsx:8:  onChange: (value?: Severity) => void;
+.\packages\web\src\components\SeverityFilter.tsx:18:      {severityLevels.map((severity) => (
+.\packages\web\src\components\SeverityFilter.tsx:20:          key={severity}
+.\packages\web\src\components\SeverityFilter.tsx:21:          onClick={() => onChange(severity)}
+.\packages\web\src\components\SeverityFilter.tsx:22:          className={`rounded-full px-4 py-2 text-sm uppercase tracking-wider ${value === severity ? 'bg-ember text-white' : 'bg-white/10 text-slate-300'}`}
+.\packages\web\src\components\SeverityFilter.tsx:24:          {severity}

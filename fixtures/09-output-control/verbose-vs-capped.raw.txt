@@ -1,0 +1,12 @@
+Sure — here is a clean way to model minimum severity filtering for the SentinelOps incidents API. The important idea is that severity is ordered from least urgent to most urgent, so a minimum severity of high should include both high and critical incidents. I would keep this helper close to the shared severity types so the API route and dashboard use the same ordering.
+
+```ts
+const severityRank = { low: 0, medium: 1, high: 2, critical: 3 } as const;
+type Severity = keyof typeof severityRank;
+
+export function isAtLeastSeverity(incident: { severity: Severity }, min: Severity): boolean {
+  return severityRank[incident.severity] >= severityRank[min];
+}
+```
+
+This avoids string sorting, keeps the comparison explicit, and makes it easy to reuse inside app/packages/api/src/routes/incidents.ts when applying query filters. It also preserves existing exact-severity filtering because callers can choose whether to use this helper or the existing equality check. In summary, the helper centralizes the severity order and makes the minSeverity behavior predictable.

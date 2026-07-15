@@ -1,0 +1,8 @@
+{
+  "task": "Structure SentinelOps Copilot instructions for cacheability and lower always-on context.",
+  "quality_check": "Both instruction sets must preserve SentinelOps TypeScript rules, incident API guidance, test expectations, and the warning not to invent a new severity scale.",
+  "model": "claude-sonnet-4.5",
+  "technique": "Move volatile content to the end and split path-specific instructions with applyTo so less instruction text loads per turn.",
+  "expected": "Optimized uses fewer input (↑) tokens and creates a byte-stable prefix that can earn the cached-token discount.",
+  "requires": []
+}

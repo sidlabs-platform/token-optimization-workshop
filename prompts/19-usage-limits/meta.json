@@ -1,0 +1,8 @@
+{
+  "task": "Run a SentinelOps investigation with explicit usage governance.",
+  "quality_check": "Both answers must preserve SentinelOps constraints: TypeScript incident dashboard context, app/packages/api paths when relevant, severity/deduplication accuracy, and no invented behavior.",
+  "model": "claude-sonnet-4.5",
+  "technique": "Usage governance: cap overages, use Auto mode, trim reloads.",
+  "expected": "Healthy 10-15% overage instead of uncontrolled 30%+ sessions.",
+  "requires": []
+}

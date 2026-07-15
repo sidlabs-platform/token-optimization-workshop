@@ -1,0 +1,3 @@
+Read the file app/packages/api/src/ingestion/ingestIncident.ts exactly once. Explain how
+incident deduplication works in at most 4 terse bullet points. No preamble, no restating of
+the question, no introduction, no concluding summary — just the bullets.

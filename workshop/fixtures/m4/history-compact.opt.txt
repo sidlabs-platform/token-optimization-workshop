@@ -1,0 +1,7 @@
+[/compact focus="escalation store + route step"]
+GOAL: add escalation to the API layer only.
+DONE: shared/lib/escalation.ts (pure escalateIncident) + filters.escalated? predicate — merged, typecheck green.
+NOW: (a) app/packages/api/src/data/store.ts — apply escalateIncident(inc, now) when listing/reading incidents;
+     (b) app/packages/api/src/routes/incidents.ts — parse ?escalated=true|false on GET '/'.
+CONSTRAINTS: optional field only, no migration; surgical edits; reply <=3 lines.
+OPEN RISK: keep escalation read-time (derived), do not persist a mutation in seed data.

@@ -1,0 +1,3 @@
+Diagnose this summarized failure: `app/packages/api` test `routes severity escalates duplicates`
+expected bucket `critical`, received `high`. Only relevant changed files: `src/routes/incidents.ts`,
+`src/ingestion/ingestIncident.ts`. Next inspect severity normalization.

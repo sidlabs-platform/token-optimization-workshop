@@ -1,0 +1,6 @@
+In the app/ directory, run the shared package's test suite and the api package's
+type-check through RTK so the output is compressed:
+- (in app/packages/shared)  rtk vitest run
+- (in app)                  rtk tsc --noEmit -p packages/api/tsconfig.json
+
+Show me the results and tell me whether everything passes and how many tests ran.

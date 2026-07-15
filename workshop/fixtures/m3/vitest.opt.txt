@@ -1,0 +1,3 @@
+vitest: 4 files, 26 tests, ALL PASS (1.42s).
+files: incidents(13), incidents.ack(8), services(3), stats(2).
+0 failures. 0 skipped.

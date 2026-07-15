@@ -1,0 +1,1 @@
+Agent: make the SentinelOps incidents page better. Explore the repo, figure out filtering, inspect API and web code, try an approach, run tests, restart if needed, and keep going until it seems right.

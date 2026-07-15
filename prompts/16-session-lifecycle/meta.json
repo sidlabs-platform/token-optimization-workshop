@@ -1,0 +1,8 @@
+{
+  "task": "Continue the SentinelOps minSeverity filter work after a long assistant session.",
+  "quality_check": "Both contexts must preserve the current goal, relevant files, severity ordering, and next test to run for the minSeverity endpoint change.",
+  "model": "claude-sonnet-4.5",
+  "technique": "Replace re-sent multi-task history with a compact one-task summary using /clear and /compact.",
+  "expected": "Optimized uses fewer input (↑) tokens by removing unrelated session history before the next turn.",
+  "requires": []
+}

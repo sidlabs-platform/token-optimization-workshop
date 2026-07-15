@@ -1,0 +1,8 @@
+{
+  "task": "Decide whether a high-severity SentinelOps incident should page on-call.",
+  "quality_check": "Both answers must say high severity pages on-call, critical escalates immediately, and low/medium remain ticket/Slack-only unless the runbook says otherwise.",
+  "model": "claude-sonnet-4.5",
+  "technique": "Cap reasoning depth: avoid visible HIGH/MAX scratch work for a routine policy answer; use MEDIUM with a concise rationale. Output tokens carry the 4x ET weight.",
+  "expected": "Optimized uses fewer output (↓) tokens by replacing a huge visible chain-of-thought with a short medium-depth answer.",
+  "requires": []
+}

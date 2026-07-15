@@ -1,0 +1,2 @@
+/clear
+/compact: Continue one task only. Add `minSeverity` to GET /api/incidents using severity ordering from `app/packages/shared/src/types/severity.ts`, filter query types in `app/packages/shared/src/types/filters.ts`, and route filtering in `app/packages/api/src/routes/incidents.ts`. Next test: high returns high+critical while exact `severity` still works.

@@ -1,0 +1,23 @@
+Question: should incidents that are acknowledged but not yet resolved still be counted in
+DashboardStats.openIncidentCount, or excluded once escalated?
+
+Let me think about this very carefully and consider every possible angle before answering.
+
+First, what is an "open" incident conceptually? I should enumerate all four statuses: open,
+investigating, mitigated, resolved. Now, acknowledgement is orthogonal to status — an incident can
+be acknowledged while still being open or investigating. So the question is really about whether the
+"open" count is a status-based count or a workflow-based count. Let me consider the history of how
+this metric might have been used. If a stakeholder looks at openIncidentCount on a wall dashboard,
+what do they expect? Probably the number of things still needing attention. But an acknowledged
+incident IS still needing attention until resolved. On the other hand, if we exclude acknowledged
+ones, the number would drop the moment someone clicks ack, which could be misleading and could be
+gamed. Let me also consider escalation: an escalated incident is by definition still unresolved and
+overdue, so it must count. Let me now consider the alternative where we split the metric into two:
+openIncidentCount and unacknowledgedIncidentCount. That would be cleaner but is a bigger change and
+touches the web layer and the stats type and every test. Let me weigh the migration cost versus the
+clarity benefit across maintainability, testability, stakeholder expectations, and backward
+compatibility, each in turn... (continues deliberating at length) ...
+
+After all of that deliberation, weighing every trade-off exhaustively, my recommendation is that
+open should mean status !== 'resolved', so acknowledged and escalated incidents both still count,
+because they are still unresolved work.

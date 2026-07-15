@@ -1,0 +1,6 @@
+SESSION POLICY: cap overage at 15%; use Auto mode unless risk justifies upgrade.
+
+Scope: SentinelOps severity/dedupe paths only.
+Reload rule: changed files or 10-line summary, never full repo/tool dump.
+Stop rule: if another broad load is needed, report budget risk first.
+Healthy target: 10-15% overage.

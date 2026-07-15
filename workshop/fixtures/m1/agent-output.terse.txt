@@ -1,0 +1,9 @@
+Plan: store ack on the incident record (simplest, fits model).
+
+Changes:
+- incident.ts: +acknowledgedBy?, +acknowledgedAt? (optional -> no migration)
+- shared/lib/acknowledge.ts: pure acknowledgeIncident(incident, engineer, now)
+- store.ts: acknowledge(id, engineer, now)
+- incidents.ts: POST /:id/ack -> 200 | 404 | 409
+
+Done. Tests: acknowledge.test.ts + incidents.ack.test.ts.

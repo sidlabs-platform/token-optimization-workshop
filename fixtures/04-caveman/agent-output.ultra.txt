@@ -1,0 +1,9 @@
+Added severity filter to IncidentsTable.
+
+Changes:
+- state: `severityFilter` (useState, default "all")
+- UI: <select> with options all|critical|high|medium|low|info (dark-theme Tailwind classes)
+- logic: `incidents.filter(i => filter==="all" || i.severity===filter)`
+- tests: "critical"→only critical rows; "all"→all rows
+
+Done. Tests pass.

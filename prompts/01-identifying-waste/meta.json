@@ -1,0 +1,7 @@
+{
+  "task": "Summarize the incidents feature (endpoints, list filters, incident fields).",
+  "quality_check": "Both answers must state the filters severity, serviceId, status, search, and mention incident fields (id, serviceId, title, severity, status).",
+  "model": "claude-sonnet-4.5",
+  "technique": "Scope the context: name the exact files instead of letting the agent read the whole repo.",
+  "expected": "Optimized uses far fewer input (\u2191) tokens for the same correct answer."
+}

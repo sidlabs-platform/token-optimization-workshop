@@ -1,0 +1,6 @@
+A budgeted knowledge-graph query has already been run for this question. Read ONLY this
+single file, which contains the graph's answer:
+- fixtures/03-graphify/graph.opt.txt
+
+Using just that graph summary, explain the incident-ingestion flow in SentinelOps end to
+end. Only read a source file if the graph summary is genuinely insufficient.

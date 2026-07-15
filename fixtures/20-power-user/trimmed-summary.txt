@@ -1,0 +1,7 @@
+Summarized failure from `npm test`:
+- Package: `app/packages/api`
+- Test: `routes severity escalates duplicates`
+- Expected `severityBucket`: `critical`; received: `high`
+- Assertion: `res.body.incident.severityBucket`
+- Likely next files: `src/routes/incidents.ts`, `src/ingestion/ingestIncident.ts`
+- Inspect severity normalization during duplicate merge.

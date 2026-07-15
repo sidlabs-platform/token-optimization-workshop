@@ -1,0 +1,2 @@
+Persistent: route SentinelOps incident API work to incident-api skill. Preserve auth and serviceId+title+severity dedupe.
+Skill desc: incident-api — routes, severity filters, validation, tests; load only on demand.

@@ -1,0 +1,5 @@
+Read the file app/packages/api/src/ingestion/ingestIncident.ts. Then read it a second time
+to be completely sure you did not miss anything. Now explain, in exhaustive detail, exactly
+how incident deduplication works. Begin by restating my question in your own words, give a
+friendly introduction, walk through every step with examples, and finish with a summary
+paragraph recapping everything you said.

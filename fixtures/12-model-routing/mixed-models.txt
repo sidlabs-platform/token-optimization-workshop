@@ -1,0 +1,7 @@
+MODEL ROUTE for SentinelOps severity work:
+- Opus: one risk plan for dedupe/severity behavior.
+- Sonnet: TypeScript edits/tests in `app/packages/api`.
+- Mini: filename, enum, and log lookups only.
+
+Handoff format: goal; touched files; open risk. Do not repeat stable repo context.
+Budget target: 22.8 units; expensive model thinks, cheaper models type/check.

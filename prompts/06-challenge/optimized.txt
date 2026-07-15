@@ -1,0 +1,5 @@
+In app/packages/shared, run just the alert-dedup tests through RTK for compact output:
+  rtk vitest run alertDedup
+
+Confirm in one or two sentences that alert deduplication is implemented and its tests pass.
+Do not print the full logs or read extra files.

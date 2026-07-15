@@ -1,0 +1,6 @@
+Reasoning (brief): "open" here means status !== 'resolved'. Acknowledgement and escalation are
+orthogonal to status — both are still unresolved work — so both must keep counting.
+
+Recommendation: openIncidentCount = incidents where status !== 'resolved'. Do NOT exclude acknowledged
+or escalated incidents. If you want a "needs first response" number, add a separate
+unacknowledgedIncidentCount rather than mutating the meaning of open.

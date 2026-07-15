@@ -1,0 +1,5 @@
+Explore the SentinelOps repository thoroughly. Read through the codebase across all
+packages (shared, api, web) — open the source files, the tests, the config, and the seed
+data as needed — so you have full context. Then give me a summary of the incidents feature:
+what REST endpoints exist for incidents, what query filters the incidents list endpoint
+supports, and what fields an incident record has.

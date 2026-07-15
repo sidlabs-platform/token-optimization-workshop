@@ -1,0 +1,1 @@
+Refactor incidents API. Keep auth, high/critical filter, dedupe key serviceId+title+severity. No extra edits.

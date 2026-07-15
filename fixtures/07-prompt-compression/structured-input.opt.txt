@@ -1,0 +1,5 @@
+GET /api/incidents
+Add query: minSeverity?: Severity
+Use shared severity order.
+Combine with status, service filters.
+Invalid value: existing 400 validation format.

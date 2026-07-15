@@ -1,0 +1,318 @@
+[Blind navigation — read many files to answer: "where is incident filtering handled, end to end?"]
+
+// ==== app/packages/shared/src/types/filters.ts ====
+import type { IncidentStatus } from './incident';
+import type { Severity } from './severity';
+export interface IncidentFilters {
+  severity?: Severity;
+  serviceId?: string;
+  status?: IncidentStatus;
+  search?: string;
+}
+export function hasActiveIncidentFilters(filters: IncidentFilters): boolean {
+  return Boolean(filters.severity || filters.serviceId || filters.status || filters.search?.trim());
+}
+
+
+// ==== app/packages/shared/src/utils/query.ts ====
+import type { Incident } from '../types/incident';
+import type { IncidentFilters } from '../types/filters';
+export function incidentMatchesFilters(incident: Incident, filters: IncidentFilters): boolean {
+  if (filters.severity && incident.severity !== filters.severity) return false;
+  if (filters.serviceId && incident.serviceId !== filters.serviceId) return false;
+  if (filters.status && incident.status !== filters.status) return false;
+  if (filters.search?.trim()) {
+    const needle = filters.search.trim().toLowerCase();
+    const haystack =
+      `${incident.title} ${incident.summary} ${incident.tags.join(' ')}`.toLowerCase();
+    if (!haystack.includes(needle)) return false;
+  }
+  return true;
+}
+
+
+// ==== app/packages/shared/src/index.ts ====
+export * from './types/severity';
+export * from './types/service';
+export * from './types/incident';
+export * from './types/filters';
+export * from './types/ingestion';
+export * from './types/stats';
+export * from './utils/date';
+export * from './utils/format';
+export * from './utils/id';
+export * from './utils/query';
+export * from './lib/alertDedup';
+export * from './lib/healthScore';
+export * from './seed/prng';
+export * from './seed/catalog';
+export * from './seed/incidents';
+export * from './seed';
+export * from './validators';
+
+
+// ==== app/packages/api/src/routes/incidents.ts ====
+import { Router } from 'express';
+import { isSeverity, type IncidentFilters, type IncidentStatus } from '@sentinelops/shared';
+import type { IncidentStore } from '../data/store';
+import { ingestIncident } from '../ingestion/ingestIncident';
+import { notFound } from '../utils/http';
+export function incidentsRouter(store: IncidentStore): Router {
+  const router = Router();
+  router.get('/', (req, res) => {
+    const filters: IncidentFilters = {};
+    if (typeof req.query.severity === 'string' && isSeverity(req.query.severity))
+      filters.severity = req.query.severity;
+    if (typeof req.query.serviceId === 'string') filters.serviceId = req.query.serviceId;
+    if (typeof req.query.status === 'string') filters.status = req.query.status as IncidentStatus;
+    if (typeof req.query.search === 'string') filters.search = req.query.search;
+    res.json(store.listIncidents(filters));
+  });
+  router.get('/:id', (req, res) => {
+    const incident = store.getIncident(req.params.id);
+    if (!incident) return notFound(res, 'incident', req.params.id);
+    return res.json(incident);
+  });
+  router.post('/ingest', (req, res) => {
+    const result = ingestIncident(req.body, store);
+    res.status(result.accepted ? (result.duplicate ? 200 : 201) : 400).json(result);
+  });
+  return router;
+}
+
+
+// ==== app/packages/api/src/data/store.ts ====
+import type { Incident, IncidentFilters, Service } from '@sentinelops/shared';
+import { incidentMatchesFilters, summarizeSeedData } from '@sentinelops/shared';
+import { seedData } from './seed';
+export class IncidentStore {
+  private services: Service[] = [...seedData.services];
+  private incidents: Incident[] = [...seedData.incidents];
+  listServices(): Service[] {
+    return this.services;
+  }
+  getService(id: string): Service | undefined {
+    return this.services.find((service) => service.id === id);
+  }
+  listIncidents(filters: IncidentFilters = {}): Incident[] {
+    return this.incidents.filter((incident) => incidentMatchesFilters(incident, filters));
+  }
+  getIncident(id: string): Incident | undefined {
+    return this.incidents.find((incident) => incident.id === id);
+  }
+  upsertIncident(incident: Incident): Incident {
+    const index = this.incidents.findIndex((item) => item.id === incident.id);
+    if (index >= 0) this.incidents[index] = incident;
+    else this.incidents.unshift(incident);
+    return incident;
+  }
+  allIncidents(): Incident[] {
+    return this.incidents;
+  }
+  stats() {
+    return summarizeSeedData(this.services, this.incidents);
+  }
+}
+export function createStore(): IncidentStore {
+  return new IncidentStore();
+}
+
+
+// ==== app/packages/api/src/app.ts ====
+import cors from 'cors';
+import express from 'express';
+import { createStore } from './data/store';
+import { errorHandler } from './middleware/errorHandler';
+import { healthRouter } from './routes/health';
+import { incidentsRouter } from './routes/incidents';
+import { servicesRouter } from './routes/services';
+import { statsRouter } from './routes/stats';
+export function createApp() {
+  const app = express();
+  const store = createStore();
+  app.use(cors());
+  app.use(express.json());
+  app.use('/api/health', healthRouter());
+  app.use('/api/services', servicesRouter(store));
+  app.use('/api/incidents', incidentsRouter(store));
+  app.use('/api/stats', statsRouter(store));
+  app.use(errorHandler);
+  return app;
+}
+
+
+// ==== app/packages/web/src/api/client.ts ====
+import type { DashboardStats, Incident, IncidentFilters, Service } from '@sentinelops/shared';
+import { fixtureData, fixtureStats } from '../data/fixtures';
+const baseUrl = import.meta.env.VITE_API_URL ?? 'http://127.0.0.1:4100';
+async function fetchJson<T>(path: string, fallback: T): Promise<T> {
+  try {
+    const res = await fetch(`${baseUrl}${path}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return (await res.json()) as T;
+  } catch {
+    return fallback;
+  }
+}
+export async function getServices(): Promise<Service[]> {
+  return fetchJson('/api/services', fixtureData.services);
+}
+export async function getStats(): Promise<DashboardStats> {
+  return fetchJson('/api/stats', fixtureStats);
+}
+export async function getIncidents(filters: IncidentFilters): Promise<Incident[]> {
+  const params = new URLSearchParams();
+  if (filters.severity) params.set('severity', filters.severity);
+  if (filters.status) params.set('status', filters.status);
+  if (filters.serviceId) params.set('serviceId', filters.serviceId);
+  if (filters.search) params.set('search', filters.search);
+  const qs = params.toString();
+  return fetchJson(`/api/incidents${qs ? `?${qs}` : ''}`, fixtureData.incidents);
+}
+
+
+// ==== app/packages/web/src/hooks/useIncidentFilters.ts ====
+import type { Severity } from '@sentinelops/shared';
+import { useAppDispatch, useAppSelector } from '../store';
+import { selectFilters, selectSearch, selectSeverity, setSearch, setSeverity } from '../store/filtersSlice';
+
+export function useIncidentFilters() {
+  const dispatch = useAppDispatch();
+  const severity = useAppSelector(selectSeverity);
+  const search = useAppSelector(selectSearch);
+  const filters = useAppSelector(selectFilters);
+
+  return {
+    filters,
+    severity,
+    setSeverity: (value: Severity | undefined) => dispatch(setSeverity(value)),
+    search,
+    setSearch: (value: string) => dispatch(setSearch(value)),
+  };
+}
+
+
+// ==== app/packages/web/src/store/filtersSlice.ts ====
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { IncidentFilters, Severity } from '@sentinelops/shared';
+
+export interface FiltersState {
+  severity: Severity | undefined;
+  search: string;
+}
+
+const initialState: FiltersState = {
+  severity: undefined,
+  search: '',
+};
+
+export const filtersSlice = createSlice({
+  name: 'filters',
+  initialState,
+  reducers: {
+    setSeverity(state, action: PayloadAction<Severity | undefined>) {
+      state.severity = action.payload;
+    },
+    setSearch(state, action: PayloadAction<string>) {
+      state.search = action.payload;
+    },
+    resetFilters(state) {
+      state.severity = undefined;
+      state.search = '';
+    },
+  },
+});
+
+export const { setSeverity, setSearch, resetFilters } = filtersSlice.actions;
+
+export function selectFilters(state: { filters: FiltersState }): IncidentFilters {
+  const filters: IncidentFilters = {};
+  if (state.filters.severity) filters.severity = state.filters.severity;
+  const trimmed = state.filters.search.trim();
+  if (trimmed) filters.search = trimmed;
+  return filters;
+}
+
+export function selectSeverity(state: { filters: FiltersState }): Severity | undefined {
+  return state.filters.severity;
+}
+
+export function selectSearch(state: { filters: FiltersState }): string {
+  return state.filters.search;
+}
+
+
+// ==== app/packages/web/src/components/SeverityFilter.tsx ====
+import type { Severity } from '@sentinelops/shared';
+import { severityLevels } from '@sentinelops/shared';
+export function SeverityFilter({
+  value,
+  onChange,
+}: {
+  value: Severity | undefined;
+  onChange: (value?: Severity) => void;
+}) {
+  return (
+    <div className="flex flex-wrap gap-2">
+      <button
+        onClick={() => onChange(undefined)}
+        className={`rounded-full px-4 py-2 text-sm ${!value ? 'bg-white text-slate-950' : 'bg-white/10 text-slate-300'}`}
+      >
+        All severities
+      </button>
+      {severityLevels.map((severity) => (
+        <button
+          key={severity}
+          onClick={() => onChange(severity)}
+          className={`rounded-full px-4 py-2 text-sm uppercase tracking-wider ${value === severity ? 'bg-ember text-white' : 'bg-white/10 text-slate-300'}`}
+        >
+          {severity}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+
+// ==== app/packages/web/src/components/IncidentsTable.tsx ====
+import type { Incident } from '@sentinelops/shared';
+import { formatRelativeTime } from '@sentinelops/shared';
+import { SeverityBadge } from './Badge';
+export function IncidentsTable({ incidents }: { incidents: Incident[] }) {
+  return (
+    <section className="rounded-3xl border border-white/10 bg-slate-950/80 p-5">
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-xl font-black">Incident stream</h2>
+        <span className="text-sm text-slate-400">{incidents.length} matching alerts</span>
+      </div>
+      <div className="max-h-[520px] overflow-auto">
+        <table className="w-full text-left text-sm">
+          <thead className="sticky top-0 bg-slate-950 text-xs uppercase tracking-[0.25em] text-slate-500">
+            <tr>
+              <th className="py-3">Severity</th>
+              <th>Incident</th>
+              <th>Status</th>
+              <th>Updated</th>
+            </tr>
+          </thead>
+          <tbody>
+            {incidents.slice(0, 80).map((incident) => (
+              <tr key={incident.id} className="border-t border-white/5">
+                <td className="py-3">
+                  <SeverityBadge severity={incident.severity} />
+                </td>
+                <td>
+                  <p className="font-semibold text-white">{incident.title}</p>
+                  <p className="text-xs text-slate-500">{incident.summary}</p>
+                </td>
+                <td className="capitalize text-slate-300">{incident.status}</td>
+                <td className="text-slate-400">{formatRelativeTime(incident.updatedAt)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+

@@ -1,0 +1,4 @@
+Research: locate severity order, incidents route, relevant tests.
+Plan: add minSeverity to GET /api/incidents; preserve exact severity and dedupe.
+Agent: implement plan only; pass targeted API tests.
+Success: high returns high+critical; invalid severity returns existing 400.

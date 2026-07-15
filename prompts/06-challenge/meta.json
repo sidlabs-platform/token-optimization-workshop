@@ -1,0 +1,8 @@
+{
+  "task": "Confirm alert deduplication is implemented and its tests pass.",
+  "quality_check": "Both answers must confirm the alert-dedup tests pass (green).",
+  "model": "claude-sonnet-4.5",
+  "technique": "Stack techniques: scope the test run to just alertDedup and pipe through RTK; avoid dumping full logs / extra file reads.",
+  "expected": "Optimized uses far fewer input (\u2191) tokens (targeted rtk vitest vs whole-suite logs + file dump).",
+  "requires": ["rtk"]
+}

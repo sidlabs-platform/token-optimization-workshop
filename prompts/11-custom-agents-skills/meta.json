@@ -1,0 +1,8 @@
+{
+  "task": "Configure guidance for SentinelOps incident API work.",
+  "quality_check": "Guidance must route API incident tasks to the right specialist behavior, preserve deduplication rules, and avoid loading unrelated UI/release instructions every turn.",
+  "model": "claude-sonnet-4.5",
+  "technique": "Replace always-on mega instructions with lean persistent routing plus lazy-loaded skills.",
+  "expected": "Optimized uses fewer input (↑) tokens because detailed skills are lazy-loaded only when needed.",
+  "requires": []
+}

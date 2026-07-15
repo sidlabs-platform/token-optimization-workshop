@@ -1,0 +1,77 @@
+$ npm ls && npm test
+sentinelops@0.9.0 C:\work\sentinelops
++-- @types/node@22.10.1
++-- eslint@9.18.0
++-- prettier@3.4.2
++-- typescript@5.7.2
++-- vite@6.0.7
++-- vitest@2.1.8
++-- tsx@4.19.2
++-- zod@3.24.1
++-- @sentinelops/api@0.9.0 -> .\app\packages\api
+| +-- express@4.21.2
+| +-- pino@9.5.0
+| +-- supertest@7.0.0
+| +-- zod@3.24.1 deduped
+| +-- @sentinelops/shared@0.9.0 -> .\app\packages\shared
++-- @sentinelops/web@0.9.0 -> .\app\packages\web
+| +-- @vitejs/plugin-react@4.3.4
+| +-- react@19.0.0
+| +-- react-dom@19.0.0
+| +-- recharts@2.15.0
+| +-- @sentinelops/shared@0.9.0 -> .\app\packages\shared
+
+> sentinelops@0.9.0 test
+> vitest run --coverage
+
+ RUN  v2.1.8 C:/work/sentinelops
+ ✓ app/packages/shared/src/incident.test.ts (18 tests) 42ms
+ ✓ app/packages/api/src/ingestion/ingestIncident.test.ts (12 tests) 61ms
+ ✓ app/packages/api/src/routes/health.test.ts (4 tests) 19ms
+ ✓ app/packages/web/src/components/IncidentTable.test.tsx (9 tests) 88ms
+ ✓ app/packages/web/src/components/SeverityBadge.test.tsx (7 tests) 34ms
+ stdout | app/packages/api/src/routes/incidents.test.ts > incidents route > lists incidents
+ seeded 25 incidents for tenant demo
+ stdout | app/packages/api/src/routes/incidents.test.ts > incidents route > filters by service
+ seeded 25 incidents for tenant demo
+ stdout | app/packages/api/src/routes/incidents.test.ts > incidents route > routes severity escalates duplicates
+ seeded 25 incidents for tenant demo
+
+ ❯ app/packages/api/src/routes/incidents.test.ts (16 tests | 1 failed) 143ms
+   ✓ lists incidents 12ms
+   ✓ filters by service 8ms
+   ✓ creates low severity manual incident 11ms
+   ✓ preserves dedupe fingerprint 9ms
+   × routes severity escalates duplicates 17ms
+     → expected 'high' to be 'critical' // Object.is equality
+   ✓ rejects invalid service id 6ms
+   ✓ returns duplicate count 5ms
+
+ FAIL  app/packages/api/src/routes/incidents.test.ts > incidents route > routes severity escalates duplicates
+ AssertionError: expected 'high' to be 'critical' // Object.is equality
+
+ Expected: "critical"
+ Received: "high"
+
+   114|     const res = await request(app).post('/incidents').send(payload).expect(201);
+   115|     expect(res.body.duplicate).toBe(true);
+   116|     expect(res.body.incident.severityBucket).toBe('critical');
+      |                                              ^
+   117|     expect(res.body.incident.duplicateCount).toBe(3);
+   118|   });
+
+ Test Files  1 failed | 5 passed (6)
+      Tests  1 failed | 65 passed (66)
+   Start at  10:14:22
+   Duration  7.48s (transform 812ms, setup 0ms, collect 2.88s, tests 387ms, environment 2.31s)
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   91.22 |    84.44 |   88.10 |   91.22 |
+api/src/routes     |   89.00 |    82.00 |   87.00 |   89.00 | 44-47,112
+api/src/ingestion  |   94.00 |    90.00 |   91.00 |   94.00 | 71
+shared/src         |   96.00 |    92.00 |   95.00 |   96.00 | 33
+web/src/components |   88.00 |    79.00 |   81.00 |   88.00 | 18-21
+-------------------|---------|----------|---------|---------|-------------------
+npm notice New minor version of npm available. Run npm install -g npm@latest for details.

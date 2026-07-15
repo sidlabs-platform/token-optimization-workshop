@@ -1,0 +1,1 @@
+Keep `.github/copilot-instructions.md` byte-stable: durable SentinelOps rules first, under 200 lines. Move dates and ticket IDs to the end. Split heavy API-only guidance into an `applyTo: app/packages/api/**` instruction file.

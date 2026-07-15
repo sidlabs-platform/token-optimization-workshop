@@ -1,0 +1,9 @@
+Hey! So I've been thinking about our SentinelOps dashboard for a while, and you know how we
+have this incidents list endpoint that lets you filter incidents? Well, right now you can
+filter by an exact severity, but what I'd really love — and I think the on-call folks would
+love it too — is to be able to say "show me everything at this severity OR worse". Like a
+minimum-severity filter, so if I pick "high" I'd see high and critical, that kind of thing.
+Could you take a look around the codebase, figure out how the current filtering is wired up,
+and then tell me what you'd change to add a `minSeverity` query parameter to the incidents
+endpoint? I don't need you to actually write the code right now, just walk me through which
+files you'd touch and what the changes would be. Thanks so much, you're a lifesaver!

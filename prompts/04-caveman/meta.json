@@ -1,0 +1,8 @@
+{
+  "task": "Explain how incident deduplication works in ingestIncident.ts.",
+  "quality_check": "Both answers must convey: a fingerprint/key is built from serviceId+title+severity, an existing active duplicate is matched, and duplicates increment duplicateCount instead of inserting a new incident.",
+  "model": "claude-sonnet-4.5",
+  "technique": "Caveman-style: read once (no re-reads = read-dedup) and generate terse output (ultra mode). Output tokens carry the 4x ET weight.",
+  "expected": "Optimized uses fewer input (\u2191, single read) AND far fewer output (\u2193, terse) tokens for the same facts.",
+  "requires": []
+}

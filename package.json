@@ -1,0 +1,17 @@
+{
+  "name": "token-optimization-workshop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A 2-hour hands-on workshop: cut token & cost burn on real repos with GitHub Copilot.",
+  "type": "module",
+  "scripts": {
+    "setup": "node -e \"console.log('Run scripts/setup.ps1 (Windows) or scripts/setup.sh (mac/Linux)')\"",
+    "bench:selftest": "node bench/selftest.mjs",
+    "fixtures": "node fixtures/generate.mjs",
+    "report": "node bench/report.mjs",
+    "deck": "node deck/build.mjs",
+    "verify": "node -e \"console.log('Run scripts/verify-all.ps1 (Windows) or scripts/verify-all.sh (mac/Linux)')\""
+  },
+  "keywords": ["copilot", "tokens", "cost", "optimization", "workshop"],
+  "license": "MIT"
+}

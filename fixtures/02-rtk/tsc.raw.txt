@@ -1,0 +1,26 @@
+sentinelops-monorepo@1.0.0 C:\temp\ws-participant\app
+├── UNMET DEPENDENCY @eslint/js@9.18.0
+├── UNMET DEPENDENCY @sentinelops/api@file:C:\temp\ws-participant\app\packages\api
+├── UNMET DEPENDENCY @sentinelops/shared@file:C:\temp\ws-participant\app\packages\shared
+├── UNMET DEPENDENCY @sentinelops/web@file:C:\temp\ws-participant\app\packages\web
+├── UNMET DEPENDENCY @types/node@22.10.7
+├── UNMET DEPENDENCY concurrently@9.1.2
+├── UNMET DEPENDENCY eslint@9.18.0
+├── UNMET DEPENDENCY prettier@^3.4.2
+├── UNMET DEPENDENCY typescript-eslint@8.20.0
+├── UNMET DEPENDENCY typescript@5.7.3
+└── UNMET DEPENDENCY vitest@2.1.8
+
+npm error code ELSPROBLEMS
+npm error missing: @eslint/js@9.18.0, required by sentinelops-monorepo@1.0.0
+npm error missing: @sentinelops/api@file:C:\temp\ws-participant\app\packages\api, required by sentinelops-monorepo@1.0.0
+npm error missing: @sentinelops/shared@file:C:\temp\ws-participant\app\packages\shared, required by sentinelops-monorepo@1.0.0
+npm error missing: @sentinelops/web@file:C:\temp\ws-participant\app\packages\web, required by sentinelops-monorepo@1.0.0
+npm error missing: @types/node@22.10.7, required by sentinelops-monorepo@1.0.0
+npm error missing: concurrently@9.1.2, required by sentinelops-monorepo@1.0.0
+npm error missing: eslint@9.18.0, required by sentinelops-monorepo@1.0.0
+npm error missing: prettier@^3.4.2, required by sentinelops-monorepo@1.0.0
+npm error missing: typescript-eslint@8.20.0, required by sentinelops-monorepo@1.0.0
+npm error missing: typescript@5.7.3, required by sentinelops-monorepo@1.0.0
+npm error missing: vitest@2.1.8, required by sentinelops-monorepo@1.0.0
+npm error A complete log of this run can be found in: C:\Users\siddhajoshi\AppData\Local\npm-cache\_logs\2026-07-15T02_15_58_660Z-debug-0.log

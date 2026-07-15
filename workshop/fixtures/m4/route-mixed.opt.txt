@@ -1,0 +1,8 @@
+[Routing plan — one model per SESSION (no mid-session switching; keep the ~90%-off cache).
+Stable rules live in copilot-instructions.md, not re-pasted.]
+- Session A (Sonnet): lookup (field = acknowledgedAt; status open|investigating|mitigated|resolved),
+  grep hops (types/filters.ts, utils/query.ts, routes/incidents.ts), implement escalateIncident +
+  store/route wiring, and the unit + affected API tests — all on one model, one session.
+- Session B (Opus, the one ambiguous piece): escalation rule + edge cases (idempotent, skip resolved,
+  clock skew). Hand the conclusion back to Session A as one line of state.
+Handoff between sessions: one line of state, no repo re-explanation (it is in copilot-instructions.md).

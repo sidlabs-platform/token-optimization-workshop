@@ -1,0 +1,1 @@
+Use maximum reasoning effort. Show all of your thinking step by step before answering. We are reviewing SentinelOps escalation policy: if an incident arrives with severity "high", should it page on-call? Consider every possible interpretation, list assumptions, compare all severities, and do not skip any reasoning.

@@ -1,0 +1,8 @@
+{
+  "task": "Explain the incident-ingestion flow end to end (payload -> stored).",
+  "quality_check": "Both answers must describe the sequence validate -> normalize -> dedup (fingerprint on service+title+severity) -> persist, and mention duplicates increment a count.",
+  "model": "claude-sonnet-4.5",
+  "technique": "Answer from a budgeted Graphify graph summary instead of reading the ~6 source files verbatim.",
+  "expected": "Optimized uses far fewer input (\u2191) tokens (reads one small graph note vs many source files).",
+  "requires": []
+}

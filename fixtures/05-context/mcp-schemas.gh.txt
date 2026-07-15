@@ -1,0 +1,6 @@
+# Instead of loading a 40-tool MCP server schema on every turn, call the gh CLI on demand:
+gh issue list --repo OWNER/REPO --state open --limit 30 --json number,title,state,labels
+gh pr view 123 --repo OWNER/REPO --json number,title,state,body
+
+# Copilot pays for the gh command + its compact JSON output only when actually needed,
+# instead of ~75 KB of tool schema on every single turn.

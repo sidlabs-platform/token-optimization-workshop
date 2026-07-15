@@ -1,0 +1,8 @@
+{
+  "task": "Plan a safe SentinelOps deduplication regression fix.",
+  "quality_check": "The plan must keep the serviceId+title+severity fingerprint stable, add or update a regression test, and avoid changing unrelated incident routes.",
+  "model": "claude-sonnet-4.5",
+  "technique": "Use concise English instead of redundant multilingual restatement.",
+  "expected": "Optimized uses fewer input (↑) tokens by removing translated duplication; English is usually cheapest for an English codebase.",
+  "requires": []
+}

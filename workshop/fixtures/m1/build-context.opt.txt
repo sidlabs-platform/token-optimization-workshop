@@ -1,0 +1,95 @@
+<context>
+Files needed to add POST /api/incidents/:id/ack:
+</context>
+// ==== app/packages/shared/src/types/incident.ts ====
+import type { Severity } from './severity';
+export type IncidentStatus = 'open' | 'investigating' | 'mitigated' | 'resolved';
+export interface Incident {
+  id: string;
+  serviceId: string;
+  title: string;
+  summary: string;
+  severity: Severity;
+  status: IncidentStatus;
+  source: 'synthetic' | 'prometheus' | 'datadog' | 'pagerduty' | 'manual';
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+  fingerprint: string;
+  duplicateCount: number;
+}
+
+// ==== app/packages/api/src/routes/incidents.ts ====
+import { Router } from 'express';
+import { isSeverity, type IncidentFilters, type IncidentStatus } from '@sentinelops/shared';
+import type { IncidentStore } from '../data/store';
+import { ingestIncident } from '../ingestion/ingestIncident';
+import { notFound } from '../utils/http';
+export function incidentsRouter(store: IncidentStore): Router {
+  const router = Router();
+  router.get('/', (req, res) => {
+    const filters: IncidentFilters = {};
+    if (typeof req.query.severity === 'string' && isSeverity(req.query.severity))
+      filters.severity = req.query.severity;
+    if (typeof req.query.serviceId === 'string') filters.serviceId = req.query.serviceId;
+    if (typeof req.query.status === 'string') filters.status = req.query.status as IncidentStatus;
+    if (typeof req.query.search === 'string') filters.search = req.query.search;
+    res.json(store.listIncidents(filters));
+  });
+  router.get('/:id', (req, res) => {
+    const incident = store.getIncident(req.params.id);
+    if (!incident) return notFound(res, 'incident', req.params.id);
+    return res.json(incident);
+  });
+  router.post('/ingest', (req, res) => {
+    const result = ingestIncident(req.body, store);
+    res.status(result.accepted ? (result.duplicate ? 200 : 201) : 400).json(result);
+  });
+  return router;
+}
+
+// ==== app/packages/api/src/data/store.ts ====
+import type { Incident, IncidentFilters, Service } from '@sentinelops/shared';
+import { incidentMatchesFilters, summarizeSeedData } from '@sentinelops/shared';
+import { seedData } from './seed';
+export class IncidentStore {
+  private services: Service[] = [...seedData.services];
+  private incidents: Incident[] = [...seedData.incidents];
+  listServices(): Service[] {
+    return this.services;
+  }
+  getService(id: string): Service | undefined {
+    return this.services.find((service) => service.id === id);
+  }
+  listIncidents(filters: IncidentFilters = {}): Incident[] {
+    return this.incidents.filter((incident) => incidentMatchesFilters(incident, filters));
+  }
+  getIncident(id: string): Incident | undefined {
+    return this.incidents.find((incident) => incident.id === id);
+  }
+  upsertIncident(incident: Incident): Incident {
+    const index = this.incidents.findIndex((item) => item.id === incident.id);
+    if (index >= 0) this.incidents[index] = incident;
+    else this.incidents.unshift(incident);
+    return incident;
+  }
+  allIncidents(): Incident[] {
+    return this.incidents;
+  }
+  stats() {
+    return summarizeSeedData(this.services, this.incidents);
+  }
+}
+export function createStore(): IncidentStore {
+  return new IncidentStore();
+}
+
+
+<task>
+Add POST /api/incidents/:id/ack. Add optional acknowledgedBy/acknowledgedAt to Incident.
+Move an 'open' incident to 'investigating' on first ack. Return 404 if the incident is missing.
+</task>
+<constraints>
+- Touch only these three files plus a new shared/lib/acknowledge.ts.
+- Do not read other files. Do not restate the plan. Keep prose to <=3 lines.
+</constraints>

@@ -1,0 +1,20 @@
+# SentinelOps Copilot Instructions
+
+Stable always-on prefix:
+- SentinelOps is a TypeScript incident dashboard.
+- API code lives in `app/packages/api/**`; shared types live in `app/packages/shared/**`; web code lives in `app/packages/web/**`.
+- Reuse the shared severity scale: low < medium < high < critical. Do not invent a new scale.
+- Preserve incident deduplication semantics: active duplicates match serviceId + title + severity and increment duplicateCount.
+- Add focused tests for changed API routes, shared type guards, or web behavior.
+
+---
+applyTo: app/packages/api/**
+---
+API-specific guidance: validate incident query params, keep exact `severity` filters compatible with new filters, and cover route behavior in tests.
+
+---
+applyTo: app/packages/shared/**
+---
+Shared-type guidance: export reusable severity ordering and filter types from the existing shared package.
+
+Volatile notes (last, not part of the reusable prefix): current ticket INC-7342, sprint 43, reviewed 2026-07-13.

@@ -1,0 +1,8 @@
+{
+  "task": "Generate a SentinelOps severity helper for incident filtering.",
+  "quality_check": "The answer must provide a TypeScript severity ordering helper that returns incidents at the requested severity or worse.",
+  "model": "claude-sonnet-4.5",
+  "technique": "Output control: require code only, no preamble, no recap.",
+  "expected": "Optimized uses fewer output (↓) tokens; output carries the 4x ET weight.",
+  "requires": []
+}

@@ -1,0 +1,15 @@
+Decision: yes, `high` should page the primary on-call in SentinelOps.
+
+Brief rationale:
+- `critical` means immediate broad escalation: page primary and secondary responders because the service is down, data loss is possible, or many customers are blocked.
+- `high` means likely customer impact or an important SLO is burning fast enough that a human must respond now, so it pages the primary on-call.
+- `medium` means visible degradation or an internal workflow is impaired, so it posts to the incident channel and creates a tracked ticket, but does not wake someone by default.
+- `low` means informational or minor impact, so it stays ticket-only.
+
+Operational rule for the TypeScript dashboard: the severity stored on the incident is the source of truth for escalation. The UI can show badges, the API can filter by severity, and ingest can deduplicate repeats, but none of those steps should silently downgrade a high incident. If an active high incident already exists with the same serviceId, title, and severity, ingest should increment duplicateCount instead of inserting a second row. That saves noise in the incident list while preserving the original page and audit trail.
+
+Recommended answer to an on-call engineer: treat high as actionable now, acknowledge the page, check the service runbook, and look for linked duplicates before opening new investigation threads. Escalate to critical only if impact expands, data integrity is at risk, or the runbook says the symptom is a hard outage. De-escalate to medium only when triage confirms there is no customer-facing urgency. Service-specific runbooks may override defaults, but absent an override the default matrix is: critical = immediate broad escalation, high = primary page, medium = Slack/ticket, low = ticket only.
+
+Why this is still a medium-depth answer: it states the decision, gives the escalation matrix, mentions the only relevant implementation nuance, and stops. It does not enumerate every hypothetical, re-read the policy repeatedly, or expose a long scratchpad. For routine SentinelOps questions, this level of rationale is enough for a reviewer to verify correctness without paying for a maximum-effort reasoning trace.
+This keeps reviewability high while avoiding expensive repetition.
+If the task grows beyond this policy check—such as reconciling conflicting runbooks, debugging pager delivery, or changing escalation code—split the work into inspect, plan, edit, test, and review steps instead of turning one prompt into a maximum-effort monologue.

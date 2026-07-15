@@ -1,0 +1,8 @@
+{
+  "task": "Add a safe minSeverity filter to SentinelOps incidents.",
+  "quality_check": "The final implementation plan must identify the severity order, incidents route, tests, and success criteria before code changes begin.",
+  "model": "claude-sonnet-4.5",
+  "technique": "Choose Ask/Research, Plan, then Agent instead of one vague Agent session.",
+  "expected": "Optimized uses fewer input (↑) tokens by avoiding vague Agent-mode exploration and restarts.",
+  "requires": []
+}

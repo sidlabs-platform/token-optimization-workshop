@@ -1,0 +1,4 @@
+Load every available MCP server and tool schema for this SentinelOps task: Slack, Jira, GitHub,
+Notion, billing, five Postgres environments, analytics, feature flags, deployment, identity admin,
+customer CRM, and observability. Keep all schemas visible on every step even if the task only asks
+about production incident deduplication.

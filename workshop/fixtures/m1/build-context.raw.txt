@@ -1,0 +1,794 @@
+[Naive session context — "explore the whole repo, then add an acknowledge endpoint"]
+
+// ==== app/packages/shared/src/index.ts ====
+export * from './types/severity';
+export * from './types/service';
+export * from './types/incident';
+export * from './types/filters';
+export * from './types/ingestion';
+export * from './types/stats';
+export * from './utils/date';
+export * from './utils/format';
+export * from './utils/id';
+export * from './utils/query';
+export * from './lib/alertDedup';
+export * from './lib/healthScore';
+export * from './seed/prng';
+export * from './seed/catalog';
+export * from './seed/incidents';
+export * from './seed';
+export * from './validators';
+
+
+// ==== app/packages/shared/src/types/incident.ts ====
+import type { Severity } from './severity';
+export type IncidentStatus = 'open' | 'investigating' | 'mitigated' | 'resolved';
+export interface Incident {
+  id: string;
+  serviceId: string;
+  title: string;
+  summary: string;
+  severity: Severity;
+  status: IncidentStatus;
+  source: 'synthetic' | 'prometheus' | 'datadog' | 'pagerduty' | 'manual';
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+  fingerprint: string;
+  duplicateCount: number;
+}
+
+
+// ==== app/packages/shared/src/types/severity.ts ====
+export const severityLevels = ['critical', 'high', 'medium', 'low'] as const;
+export type Severity = (typeof severityLevels)[number];
+export const severityRank: Record<Severity, number> = { critical: 4, high: 3, medium: 2, low: 1 };
+export function isSeverity(value: unknown): value is Severity {
+  return typeof value === 'string' && (severityLevels as readonly string[]).includes(value);
+}
+export function compareSeverity(a: Severity, b: Severity): number {
+  return severityRank[b] - severityRank[a];
+}
+
+
+// ==== app/packages/shared/src/types/service.ts ====
+import type { Severity } from './severity';
+export type ServiceTier = 'edge' | 'core' | 'data' | 'worker';
+export type Region = 'us-east' | 'us-west' | 'eu-central' | 'ap-south';
+export interface ServiceHealthSnapshot {
+  latencyMs: number;
+  errorRate: number;
+  saturation: number;
+  uptimePercent: number;
+}
+export interface Service {
+  id: string;
+  name: string;
+  owner: string;
+  tier: ServiceTier;
+  region: Region;
+  description: string;
+  dependencies: string[];
+  health: ServiceHealthSnapshot;
+  activeIncidentCount: number;
+  highestSeverity?: Severity;
+  updatedAt: string;
+}
+
+
+// ==== app/packages/shared/src/types/filters.ts ====
+import type { IncidentStatus } from './incident';
+import type { Severity } from './severity';
+export interface IncidentFilters {
+  severity?: Severity;
+  serviceId?: string;
+  status?: IncidentStatus;
+  search?: string;
+}
+export function hasActiveIncidentFilters(filters: IncidentFilters): boolean {
+  return Boolean(filters.severity || filters.serviceId || filters.status || filters.search?.trim());
+}
+
+
+// ==== app/packages/shared/src/types/ingestion.ts ====
+import type { IncidentStatus } from './incident';
+import type { Severity } from './severity';
+export interface IncomingIncidentPayload {
+  serviceId: string;
+  title: string;
+  summary?: string;
+  severity: Severity | string;
+  status?: IncidentStatus | string;
+  source?: string;
+  tags?: string[];
+  observedAt?: string;
+}
+export interface ValidationIssue {
+  field: string;
+  message: string;
+}
+
+
+// ==== app/packages/shared/src/types/stats.ts ====
+import type { IncidentStatus } from './incident';
+import type { Severity } from './severity';
+export interface DashboardStats {
+  serviceCount: number;
+  openIncidentCount: number;
+  averageHealthScore: number;
+  incidentsBySeverity: Record<Severity, number>;
+  incidentsByStatus: Record<IncidentStatus, number>;
+  topImpactedServices: Array<{ serviceId: string; name: string; incidentCount: number }>;
+}
+
+
+// ==== app/packages/shared/src/utils/query.ts ====
+import type { Incident } from '../types/incident';
+import type { IncidentFilters } from '../types/filters';
+export function incidentMatchesFilters(incident: Incident, filters: IncidentFilters): boolean {
+  if (filters.severity && incident.severity !== filters.severity) return false;
+  if (filters.serviceId && incident.serviceId !== filters.serviceId) return false;
+  if (filters.status && incident.status !== filters.status) return false;
+  if (filters.search?.trim()) {
+    const needle = filters.search.trim().toLowerCase();
+    const haystack =
+      `${incident.title} ${incident.summary} ${incident.tags.join(' ')}`.toLowerCase();
+    if (!haystack.includes(needle)) return false;
+  }
+  return true;
+}
+
+
+// ==== app/packages/shared/src/utils/date.ts ====
+const MINUTE = 60_000;
+export function addMinutes(iso: string, minutes: number): string {
+  return new Date(new Date(iso).getTime() + minutes * MINUTE).toISOString();
+}
+export function formatRelativeTime(iso: string, nowIso = '2026-01-15T12:00:00.000Z'): string {
+  const diff = new Date(nowIso).getTime() - new Date(iso).getTime();
+  const minutes = Math.max(0, Math.round(diff / MINUTE));
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 48) return `${hours}h ago`;
+  return `${Math.round(hours / 24)}d ago`;
+}
+export function isIsoDate(value: string): boolean {
+  return !Number.isNaN(Date.parse(value)) && value.includes('T');
+}
+
+
+// ==== app/packages/shared/src/utils/format.ts ====
+import type { Severity } from '../types/severity';
+export function titleCase(value: string): string {
+  return value.replace(/[-_]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+}
+export function formatPercent(value: number, digits = 1): string {
+  return `${(value * 100).toFixed(digits)}%`;
+}
+export function formatLatency(ms: number): string {
+  return ms < 1000 ? `${Math.round(ms)}ms` : `${(ms / 1000).toFixed(1)}s`;
+}
+export function severityLabel(severity: Severity): string {
+  return titleCase(severity);
+}
+
+
+// ==== app/packages/shared/src/utils/id.ts ====
+export function slugify(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+export function stableId(prefix: string, parts: Array<string | number>): string {
+  return `${prefix}-${slugify(parts.join('-'))}`;
+}
+export function fingerprint(parts: Array<string | number | undefined>): string {
+  return slugify(parts.filter(Boolean).join('|')).slice(0, 96);
+}
+
+
+// ==== app/packages/shared/src/lib/alertDedup.ts ====
+import type { Incident } from '../types/incident';
+import type { IncomingIncidentPayload } from '../types/ingestion';
+import { fingerprint } from '../utils/id';
+export function createAlertFingerprint(
+  payload: Pick<IncomingIncidentPayload, 'serviceId' | 'title' | 'severity'>,
+): string {
+  return fingerprint([payload.serviceId, payload.title, payload.severity]);
+}
+export function findDuplicateIncident(incidents: Incident[], fp: string): Incident | undefined {
+  return incidents.find(
+    (incident) => incident.fingerprint === fp && incident.status !== 'resolved',
+  );
+}
+export function mergeDuplicateIncident(existing: Incident, observedAt: string): Incident {
+  return { ...existing, duplicateCount: existing.duplicateCount + 1, updatedAt: observedAt };
+}
+
+
+// ==== app/packages/shared/src/lib/healthScore.ts ====
+import type { Incident } from '../types/incident';
+import type { ServiceHealthSnapshot } from '../types/service';
+import { severityRank } from '../types/severity';
+export function calculateHealthScore(
+  health: ServiceHealthSnapshot,
+  activeIncidents: Incident[] = [],
+): number {
+  const latencyPenalty = Math.min(30, health.latencyMs / 55);
+  const errorPenalty = Math.min(35, health.errorRate * 650);
+  const saturationPenalty = Math.min(20, health.saturation * 12);
+  const uptimePenalty = Math.min(25, (1 - health.uptimePercent) * 800);
+  const incidentPenalty = activeIncidents.reduce(
+    (sum, incident) => sum + severityRank[incident.severity] * 3,
+    0,
+  );
+  return Math.max(
+    0,
+    Math.min(
+      100,
+      Math.round(
+        100 - latencyPenalty - errorPenalty - saturationPenalty - uptimePenalty - incidentPenalty,
+      ),
+    ),
+  );
+}
+export function scoreBand(score: number): 'stable' | 'watch' | 'degraded' | 'critical' {
+  if (score >= 90) return 'stable';
+  if (score >= 75) return 'watch';
+  if (score >= 55) return 'degraded';
+  return 'critical';
+}
+
+
+// ==== app/packages/shared/src/seed/catalog.ts ====
+import type { Region, Service, ServiceTier } from '../types/service';
+import { slugify } from '../utils/id';
+const names = [
+  'Auth Gateway',
+  'Billing Ledger',
+  'Checkout Stream',
+  'Customer Graph',
+  'Deploy Orchestrator',
+  'Edge Cache',
+  'Email Relay',
+  'Feature Flags',
+  'Fraud Lens',
+  'Inventory Core',
+  'Kafka Bridge',
+  'License Vault',
+  'Metrics Intake',
+  'Notification Hub',
+  'Orders API',
+  'Payment Router',
+  'Policy Engine',
+  'Pricing Matrix',
+  'Recommendations',
+  'Search Mesh',
+  'Session Store',
+  'Shipping Planner',
+  'Telemetry Lake',
+  'Tenant Registry',
+  'Usage Meter',
+  'Workflow Runner',
+  'Audit Archive',
+  'Mobile Sync',
+];
+const tiers: ServiceTier[] = ['edge', 'core', 'data', 'worker'];
+const regions: Region[] = ['us-east', 'us-west', 'eu-central', 'ap-south'];
+export function buildServiceCatalog(): Service[] {
+  return names.map((name, index) => ({
+    id: slugify(name),
+    name,
+    owner: `team-${['atlas', 'nova', 'pulse', 'forge'][index % 4]}`,
+    tier: tiers[index % tiers.length] as ServiceTier,
+    region: regions[index % regions.length] as Region,
+    description: `${name} powers SentinelOps production workflows for region ${regions[index % regions.length]}.`,
+    dependencies:
+      index < 3
+        ? []
+        : [
+            slugify(names[(index - 1) % names.length] as string),
+            slugify(names[(index - 3) % names.length] as string),
+          ],
+    health: {
+      latencyMs: 65 + (index % 9) * 27,
+      errorRate: ((index % 7) + 1) / 1000,
+      saturation: 0.35 + (index % 11) / 20,
+      uptimePercent: 0.998 - (index % 5) / 1000,
+    },
+    activeIncidentCount: 0,
+    updatedAt: '2026-01-15T12:00:00.000Z',
+  }));
+}
+
+
+// ==== app/packages/shared/src/seed/incidents.ts ====
+import type { Incident, IncidentStatus } from '../types/incident';
+import { severityLevels, type Severity } from '../types/severity';
+import { addMinutes } from '../utils/date';
+import { fingerprint, stableId } from '../utils/id';
+import { DeterministicSequence } from './prng';
+import { buildServiceCatalog } from './catalog';
+const statuses: IncidentStatus[] = ['open', 'investigating', 'mitigated', 'resolved'];
+const sources = ['prometheus', 'datadog', 'pagerduty', 'manual'] as const;
+const symptoms = [
+  'latency spike',
+  'error budget burn',
+  'queue depth growth',
+  'dependency timeout',
+  'cache churn',
+  'regional brownout',
+  'deploy regression',
+  'saturation alert',
+];
+export function buildIncidentSeed(count = 360): Incident[] {
+  const rng = new DeterministicSequence(42);
+  const services = buildServiceCatalog();
+  const base = '2026-01-15T12:00:00.000Z';
+  return Array.from({ length: count }, (_, index) => {
+    const service = services[index % services.length] as { id: string; name: string };
+    const severity = severityLevels[(index + rng.int(0, 3)) % severityLevels.length] as Severity;
+    const status = statuses[(index + rng.int(0, 3)) % statuses.length] as IncidentStatus;
+    const symptom = rng.pick(symptoms);
+    const createdAt = addMinutes(base, -index * 17 - rng.int(0, 9));
+    const title = `${service.name} ${symptom}`;
+    return {
+      id: stableId('inc', [index + 1, service.id, symptom]),
+      serviceId: service.id,
+      title,
+      summary: `${severity} ${symptom} detected on ${service.name}; runbook automation attached deterministic trace ${index}.`,
+      severity,
+      status,
+      source: rng.pick(sources),
+      tags: [service.id, symptom.replace(/\s+/g, '-'), severity],
+      createdAt,
+      updatedAt: addMinutes(createdAt, rng.int(3, 55)),
+      fingerprint: fingerprint([service.id, title, severity]),
+      duplicateCount: index % 19 === 0 ? 2 : 1,
+    };
+  });
+}
+
+
+// ==== app/packages/shared/src/seed/index.ts ====
+import type { DashboardStats } from '../types/stats';
+import type { Service } from '../types/service';
+import { calculateHealthScore } from '../lib/healthScore';
+import { severityRank } from '../types/severity';
+import { buildIncidentSeed } from './incidents';
+import { buildServiceCatalog } from './catalog';
+export function buildSeedData() {
+  const incidents = buildIncidentSeed(360);
+  const services = buildServiceCatalog().map((service) => {
+    const active = incidents.filter((i) => i.serviceId === service.id && i.status !== 'resolved');
+    const highestSeverity = active.sort(
+      (a, b) => severityRank[b.severity] - severityRank[a.severity],
+    )[0]?.severity;
+    return highestSeverity
+      ? { ...service, activeIncidentCount: active.length, highestSeverity }
+      : { ...service, activeIncidentCount: active.length };
+  });
+  return { services, incidents };
+}
+export function summarizeSeedData(
+  services: Service[],
+  incidents = buildIncidentSeed(),
+): DashboardStats {
+  const open = incidents.filter((i) => i.status !== 'resolved');
+  return {
+    serviceCount: services.length,
+    openIncidentCount: open.length,
+    averageHealthScore: Math.round(
+      services.reduce(
+        (sum, service) =>
+          sum +
+          calculateHealthScore(
+            service.health,
+            open.filter((i) => i.serviceId === service.id),
+          ),
+        0,
+      ) / services.length,
+    ),
+    incidentsBySeverity: {
+      critical: incidents.filter((i) => i.severity === 'critical').length,
+      high: incidents.filter((i) => i.severity === 'high').length,
+      medium: incidents.filter((i) => i.severity === 'medium').length,
+      low: incidents.filter((i) => i.severity === 'low').length,
+    },
+    incidentsByStatus: {
+      open: incidents.filter((i) => i.status === 'open').length,
+      investigating: incidents.filter((i) => i.status === 'investigating').length,
+      mitigated: incidents.filter((i) => i.status === 'mitigated').length,
+      resolved: incidents.filter((i) => i.status === 'resolved').length,
+    },
+    topImpactedServices: services
+      .map((s) => ({
+        serviceId: s.id,
+        name: s.name,
+        incidentCount: incidents.filter((i) => i.serviceId === s.id).length,
+      }))
+      .sort((a, b) => b.incidentCount - a.incidentCount)
+      .slice(0, 5),
+  };
+}
+
+export { buildIncidentSeed } from './incidents';
+export { buildServiceCatalog } from './catalog';
+
+
+// ==== app/packages/shared/src/validators.ts ====
+import type { IncomingIncidentPayload, ValidationIssue } from './types/ingestion';
+import { isSeverity } from './types/severity';
+const statuses = ['open', 'investigating', 'mitigated', 'resolved'];
+export function validateIncomingIncident(payload: IncomingIncidentPayload): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+  if (!payload.serviceId?.trim())
+    issues.push({ field: 'serviceId', message: 'serviceId is required' });
+  if (!payload.title?.trim()) issues.push({ field: 'title', message: 'title is required' });
+  if (!isSeverity(payload.severity))
+    issues.push({ field: 'severity', message: 'severity must be critical, high, medium, or low' });
+  if (payload.status && !statuses.includes(payload.status))
+    issues.push({ field: 'status', message: 'status is invalid' });
+  if (payload.observedAt && Number.isNaN(Date.parse(payload.observedAt)))
+    issues.push({ field: 'observedAt', message: 'observedAt must be an ISO date' });
+  return issues;
+}
+
+
+// ==== app/packages/api/src/app.ts ====
+import cors from 'cors';
+import express from 'express';
+import { createStore } from './data/store';
+import { errorHandler } from './middleware/errorHandler';
+import { healthRouter } from './routes/health';
+import { incidentsRouter } from './routes/incidents';
+import { servicesRouter } from './routes/services';
+import { statsRouter } from './routes/stats';
+export function createApp() {
+  const app = express();
+  const store = createStore();
+  app.use(cors());
+  app.use(express.json());
+  app.use('/api/health', healthRouter());
+  app.use('/api/services', servicesRouter(store));
+  app.use('/api/incidents', incidentsRouter(store));
+  app.use('/api/stats', statsRouter(store));
+  app.use(errorHandler);
+  return app;
+}
+
+
+// ==== app/packages/api/src/server.ts ====
+export { createApp } from './app';
+
+
+// ==== app/packages/api/src/index.ts ====
+import { createApp } from './app';
+const port = Number(process.env.PORT ?? 4100);
+createApp().listen(port, () => console.log(`SentinelOps API listening on ${port}`));
+
+
+// ==== app/packages/api/src/data/store.ts ====
+import type { Incident, IncidentFilters, Service } from '@sentinelops/shared';
+import { incidentMatchesFilters, summarizeSeedData } from '@sentinelops/shared';
+import { seedData } from './seed';
+export class IncidentStore {
+  private services: Service[] = [...seedData.services];
+  private incidents: Incident[] = [...seedData.incidents];
+  listServices(): Service[] {
+    return this.services;
+  }
+  getService(id: string): Service | undefined {
+    return this.services.find((service) => service.id === id);
+  }
+  listIncidents(filters: IncidentFilters = {}): Incident[] {
+    return this.incidents.filter((incident) => incidentMatchesFilters(incident, filters));
+  }
+  getIncident(id: string): Incident | undefined {
+    return this.incidents.find((incident) => incident.id === id);
+  }
+  upsertIncident(incident: Incident): Incident {
+    const index = this.incidents.findIndex((item) => item.id === incident.id);
+    if (index >= 0) this.incidents[index] = incident;
+    else this.incidents.unshift(incident);
+    return incident;
+  }
+  allIncidents(): Incident[] {
+    return this.incidents;
+  }
+  stats() {
+    return summarizeSeedData(this.services, this.incidents);
+  }
+}
+export function createStore(): IncidentStore {
+  return new IncidentStore();
+}
+
+
+// ==== app/packages/api/src/data/seed.ts ====
+import { buildSeedData, summarizeSeedData } from '@sentinelops/shared';
+export const seedData = buildSeedData();
+export const seedStats = summarizeSeedData(seedData.services, seedData.incidents);
+
+
+// ==== app/packages/api/src/routes/incidents.ts ====
+import { Router } from 'express';
+import { isSeverity, type IncidentFilters, type IncidentStatus } from '@sentinelops/shared';
+import type { IncidentStore } from '../data/store';
+import { ingestIncident } from '../ingestion/ingestIncident';
+import { notFound } from '../utils/http';
+export function incidentsRouter(store: IncidentStore): Router {
+  const router = Router();
+  router.get('/', (req, res) => {
+    const filters: IncidentFilters = {};
+    if (typeof req.query.severity === 'string' && isSeverity(req.query.severity))
+      filters.severity = req.query.severity;
+    if (typeof req.query.serviceId === 'string') filters.serviceId = req.query.serviceId;
+    if (typeof req.query.status === 'string') filters.status = req.query.status as IncidentStatus;
+    if (typeof req.query.search === 'string') filters.search = req.query.search;
+    res.json(store.listIncidents(filters));
+  });
+  router.get('/:id', (req, res) => {
+    const incident = store.getIncident(req.params.id);
+    if (!incident) return notFound(res, 'incident', req.params.id);
+    return res.json(incident);
+  });
+  router.post('/ingest', (req, res) => {
+    const result = ingestIncident(req.body, store);
+    res.status(result.accepted ? (result.duplicate ? 200 : 201) : 400).json(result);
+  });
+  return router;
+}
+
+
+// ==== app/packages/api/src/routes/services.ts ====
+import { Router } from 'express';
+import type { IncidentStore } from '../data/store';
+import { notFound } from '../utils/http';
+export function servicesRouter(store: IncidentStore): Router {
+  const router = Router();
+  router.get('/', (_req, res) => res.json(store.listServices()));
+  router.get('/:id', (req, res) => {
+    const service = store.getService(req.params.id);
+    if (!service) return notFound(res, 'service', req.params.id);
+    return res.json(service);
+  });
+  return router;
+}
+
+
+// ==== app/packages/api/src/routes/stats.ts ====
+import { Router } from 'express';
+import type { IncidentStore } from '../data/store';
+export function statsRouter(store: IncidentStore): Router {
+  const router = Router();
+  router.get('/', (_req, res) => res.json(store.stats()));
+  return router;
+}
+
+
+// ==== app/packages/api/src/routes/health.ts ====
+import { Router } from 'express';
+export function healthRouter(): Router {
+  const router = Router();
+  router.get('/', (_req, res) =>
+    res.json({ ok: true, service: 'sentinelops-api', time: '2026-01-15T12:00:00.000Z' }),
+  );
+  return router;
+}
+
+
+// ==== app/packages/api/src/ingestion/ingestIncident.ts ====
+import type { Incident, IncomingIncidentPayload } from '@sentinelops/shared';
+import {
+  createAlertFingerprint,
+  findDuplicateIncident,
+  mergeDuplicateIncident,
+  stableId,
+  validateIncomingIncident,
+} from '@sentinelops/shared';
+import type { IncidentStore } from '../data/store';
+export interface IngestionResult {
+  accepted: boolean;
+  incident?: Incident;
+  duplicate: boolean;
+  issues: Array<{ field: string; message: string }>;
+}
+export function ingestIncident(
+  payload: IncomingIncidentPayload,
+  store: IncidentStore,
+): IngestionResult {
+  const issues = validateIncomingIncident(payload);
+  if (issues.length > 0) return { accepted: false, duplicate: false, issues };
+  const observedAt = payload.observedAt ?? new Date('2026-01-15T12:00:00.000Z').toISOString();
+  const fp = createAlertFingerprint({
+    serviceId: payload.serviceId,
+    title: payload.title,
+    severity: payload.severity,
+  });
+  const duplicate = findDuplicateIncident(store.allIncidents(), fp);
+  if (duplicate)
+    return {
+      accepted: true,
+      duplicate: true,
+      incident: store.upsertIncident(mergeDuplicateIncident(duplicate, observedAt)),
+      issues: [],
+    };
+  const incident: Incident = {
+    id: stableId('ing', [payload.serviceId, payload.title, observedAt]),
+    serviceId: payload.serviceId,
+    title: payload.title.trim(),
+    summary: payload.summary?.trim() || payload.title.trim(),
+    severity: payload.severity as Incident['severity'],
+    status: (payload.status as Incident['status']) ?? 'open',
+    source: (payload.source as Incident['source']) ?? 'manual',
+    tags: payload.tags ?? [],
+    createdAt: observedAt,
+    updatedAt: observedAt,
+    fingerprint: fp,
+    duplicateCount: 1,
+  };
+  return { accepted: true, duplicate: false, incident: store.upsertIncident(incident), issues: [] };
+}
+
+
+// ==== app/packages/api/src/middleware/errorHandler.ts ====
+import type { ErrorRequestHandler } from 'express';
+export const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
+  res
+    .status(500)
+    .json({
+      error: 'internal_error',
+      message: error instanceof Error ? error.message : 'unknown error',
+    });
+};
+
+
+// ==== app/packages/api/src/utils/http.ts ====
+import type { Response } from 'express';
+export function notFound(res: Response, resource: string, id: string): void {
+  res.status(404).json({ error: `${resource} not found`, id });
+}
+
+
+// ==== app/packages/api/src/routes/incidents.test.ts ====
+import request from 'supertest';
+import { describe, expect, it } from 'vitest';
+import { createApp } from '../app';
+describe('incidents api', () => {
+  it('lists seeded incidents', async () => {
+    const res = await request(createApp()).get('/api/incidents').expect(200);
+    expect(res.body.length).toBeGreaterThanOrEqual(300);
+  });
+  it.each(['critical', 'high', 'medium', 'low'])(
+    'filters incidents by severity %s',
+    async (severity) => {
+      const res = await request(createApp()).get(`/api/incidents?severity=${severity}`).expect(200);
+      expect(res.body.length).toBeGreaterThan(10);
+      expect(res.body.every((i: any) => i.severity === severity)).toBe(true);
+    },
+  );
+  it.each(['open', 'investigating', 'mitigated', 'resolved'])(
+    'filters incidents by status %s',
+    async (status) => {
+      const res = await request(createApp()).get(`/api/incidents?status=${status}`).expect(200);
+      expect(res.body.every((i: any) => i.status === status)).toBe(true);
+    },
+  );
+  it('filters incidents by service id', async () => {
+    const res = await request(createApp()).get('/api/incidents?serviceId=auth-gateway').expect(200);
+    expect(res.body.every((i: any) => i.serviceId === 'auth-gateway')).toBe(true);
+  });
+  it('filters incidents by search text', async () => {
+    const res = await request(createApp()).get('/api/incidents?search=latency').expect(200);
+    expect(res.body.length).toBeGreaterThan(0);
+    expect(
+      res.body.every((i: any) =>
+        `${i.title} ${i.summary} ${i.tags.join(' ')}`.toLowerCase().includes('latency'),
+      ),
+    ).toBe(true);
+  });
+  it('gets an incident by id', async () => {
+    const list = await request(createApp()).get('/api/incidents').expect(200);
+    const res = await request(createApp()).get(`/api/incidents/${list.body[0].id}`).expect(200);
+    expect(res.body.id).toBe(list.body[0].id);
+  });
+  it('returns 404 for missing incident', async () => {
+    await request(createApp()).get('/api/incidents/not-real').expect(404);
+  });
+});
+
+
+// ==== app/packages/api/src/routes/services.test.ts ====
+import request from 'supertest';
+import { describe, expect, it } from 'vitest';
+import { createApp } from '../app';
+describe('services api', () => {
+  it('lists dozens of services', async () => {
+    const res = await request(createApp()).get('/api/services').expect(200);
+    expect(res.body.length).toBeGreaterThanOrEqual(24);
+  });
+  it('gets a service by id', async () => {
+    const res = await request(createApp()).get('/api/services/auth-gateway').expect(200);
+    expect(res.body.name).toBe('Auth Gateway');
+  });
+  it('returns 404 for unknown service', async () => {
+    await request(createApp()).get('/api/services/unknown').expect(404);
+  });
+  it('reports health', async () => {
+    const res = await request(createApp()).get('/api/health').expect(200);
+    expect(res.body.ok).toBe(true);
+  });
+});
+
+
+// ==== app/packages/api/src/routes/stats.test.ts ====
+import request from 'supertest';
+import { describe, expect, it } from 'vitest';
+import { createApp } from '../app';
+describe('stats api', () => {
+  it('aggregates service and incident totals', async () => {
+    const res = await request(createApp()).get('/api/stats').expect(200);
+    expect(res.body.serviceCount).toBe(28);
+    expect(res.body.openIncidentCount).toBeGreaterThan(200);
+  });
+  it.each(['critical', 'high', 'medium', 'low'])(
+    'includes severity bucket %s',
+    async (severity) => {
+      const res = await request(createApp()).get('/api/stats').expect(200);
+      expect(res.body.incidentsBySeverity[severity]).toBeGreaterThan(0);
+    },
+  );
+  it.each(['open', 'investigating', 'mitigated', 'resolved'])(
+    'includes status bucket %s',
+    async (status) => {
+      const res = await request(createApp()).get('/api/stats').expect(200);
+      expect(res.body.incidentsByStatus[status]).toBeGreaterThan(0);
+    },
+  );
+});
+
+
+// ==== app/packages/api/src/ingestion/ingestIncident.test.ts ====
+import request from 'supertest';
+import { describe, expect, it } from 'vitest';
+import { createApp } from '../app';
+describe('incident ingestion', () => {
+  it('accepts a valid incident payload', async () => {
+    const res = await request(createApp())
+      .post('/api/incidents/ingest')
+      .send({
+        serviceId: 'auth-gateway',
+        title: 'Auth Gateway synthetic outage',
+        severity: 'critical',
+        tags: ['synthetic'],
+      })
+      .expect(201);
+    expect(res.body.accepted).toBe(true);
+    expect(res.body.incident.status).toBe('open');
+  });
+  it('deduplicates repeated active payloads', async () => {
+    const app = createApp();
+    const body = {
+      serviceId: 'billing-ledger',
+      title: 'Billing duplicate spike',
+      severity: 'high',
+    };
+    await request(app).post('/api/incidents/ingest').send(body).expect(201);
+    const res = await request(app).post('/api/incidents/ingest').send(body).expect(200);
+    expect(res.body.duplicate).toBe(true);
+    expect(res.body.incident.duplicateCount).toBe(2);
+  });
+  it.each([
+    { serviceId: '', title: 'x', severity: 'high' },
+    { serviceId: 'svc', title: '', severity: 'high' },
+    { serviceId: 'svc', title: 'x', severity: 'urgent' },
+    { serviceId: 'svc', title: 'x', severity: 'low', observedAt: 'not-a-date' },
+  ])('rejects invalid payload %o', async (body) => {
+    const res = await request(createApp()).post('/api/incidents/ingest').send(body).expect(400);
+    expect(res.body.accepted).toBe(false);
+    expect(res.body.issues.length).toBeGreaterThan(0);
+  });
+});
+

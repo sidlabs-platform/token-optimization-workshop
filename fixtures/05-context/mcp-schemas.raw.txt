@@ -1,0 +1,2604 @@
+{
+  "tools": [
+    {
+      "name": "list_issue",
+      "description": "List a issue on GitHub. Requires appropriate scopes. Returns a JSON object describing the issue including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "issue_number": {
+            "type": "integer",
+            "description": "The number identifying the issue."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_issue",
+      "description": "Get a issue on GitHub. Requires appropriate scopes. Returns a JSON object describing the issue including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "issue_number": {
+            "type": "integer",
+            "description": "The number identifying the issue."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_pull_request",
+      "description": "List a pull request on GitHub. Requires appropriate scopes. Returns a JSON object describing the pull request including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "pull_request_number": {
+            "type": "integer",
+            "description": "The number identifying the pull request."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_pull_request",
+      "description": "Get a pull request on GitHub. Requires appropriate scopes. Returns a JSON object describing the pull request including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "pull_request_number": {
+            "type": "integer",
+            "description": "The number identifying the pull request."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_repository",
+      "description": "List a repository on GitHub. Requires appropriate scopes. Returns a JSON object describing the repository including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "repository_number": {
+            "type": "integer",
+            "description": "The number identifying the repository."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_repository",
+      "description": "Get a repository on GitHub. Requires appropriate scopes. Returns a JSON object describing the repository including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "repository_number": {
+            "type": "integer",
+            "description": "The number identifying the repository."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_branch",
+      "description": "List a branch on GitHub. Requires appropriate scopes. Returns a JSON object describing the branch including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "branch_number": {
+            "type": "integer",
+            "description": "The number identifying the branch."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_branch",
+      "description": "Get a branch on GitHub. Requires appropriate scopes. Returns a JSON object describing the branch including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "branch_number": {
+            "type": "integer",
+            "description": "The number identifying the branch."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_commit",
+      "description": "List a commit on GitHub. Requires appropriate scopes. Returns a JSON object describing the commit including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "commit_number": {
+            "type": "integer",
+            "description": "The number identifying the commit."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_commit",
+      "description": "Get a commit on GitHub. Requires appropriate scopes. Returns a JSON object describing the commit including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "commit_number": {
+            "type": "integer",
+            "description": "The number identifying the commit."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_workflow",
+      "description": "List a workflow on GitHub. Requires appropriate scopes. Returns a JSON object describing the workflow including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "workflow_number": {
+            "type": "integer",
+            "description": "The number identifying the workflow."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_workflow",
+      "description": "Get a workflow on GitHub. Requires appropriate scopes. Returns a JSON object describing the workflow including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "workflow_number": {
+            "type": "integer",
+            "description": "The number identifying the workflow."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_release",
+      "description": "List a release on GitHub. Requires appropriate scopes. Returns a JSON object describing the release including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "release_number": {
+            "type": "integer",
+            "description": "The number identifying the release."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_release",
+      "description": "Get a release on GitHub. Requires appropriate scopes. Returns a JSON object describing the release including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "release_number": {
+            "type": "integer",
+            "description": "The number identifying the release."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_gist",
+      "description": "List a gist on GitHub. Requires appropriate scopes. Returns a JSON object describing the gist including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "gist_number": {
+            "type": "integer",
+            "description": "The number identifying the gist."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_gist",
+      "description": "Get a gist on GitHub. Requires appropriate scopes. Returns a JSON object describing the gist including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "gist_number": {
+            "type": "integer",
+            "description": "The number identifying the gist."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_team",
+      "description": "List a team on GitHub. Requires appropriate scopes. Returns a JSON object describing the team including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "team_number": {
+            "type": "integer",
+            "description": "The number identifying the team."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_team",
+      "description": "Get a team on GitHub. Requires appropriate scopes. Returns a JSON object describing the team including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "team_number": {
+            "type": "integer",
+            "description": "The number identifying the team."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_org",
+      "description": "List a org on GitHub. Requires appropriate scopes. Returns a JSON object describing the org including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "org_number": {
+            "type": "integer",
+            "description": "The number identifying the org."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_org",
+      "description": "Get a org on GitHub. Requires appropriate scopes. Returns a JSON object describing the org including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "org_number": {
+            "type": "integer",
+            "description": "The number identifying the org."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_project",
+      "description": "List a project on GitHub. Requires appropriate scopes. Returns a JSON object describing the project including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "project_number": {
+            "type": "integer",
+            "description": "The number identifying the project."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_project",
+      "description": "Get a project on GitHub. Requires appropriate scopes. Returns a JSON object describing the project including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "project_number": {
+            "type": "integer",
+            "description": "The number identifying the project."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_milestone",
+      "description": "List a milestone on GitHub. Requires appropriate scopes. Returns a JSON object describing the milestone including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "milestone_number": {
+            "type": "integer",
+            "description": "The number identifying the milestone."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_milestone",
+      "description": "Get a milestone on GitHub. Requires appropriate scopes. Returns a JSON object describing the milestone including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "milestone_number": {
+            "type": "integer",
+            "description": "The number identifying the milestone."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_label",
+      "description": "List a label on GitHub. Requires appropriate scopes. Returns a JSON object describing the label including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "label_number": {
+            "type": "integer",
+            "description": "The number identifying the label."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_label",
+      "description": "Get a label on GitHub. Requires appropriate scopes. Returns a JSON object describing the label including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "label_number": {
+            "type": "integer",
+            "description": "The number identifying the label."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_secret",
+      "description": "List a secret on GitHub. Requires appropriate scopes. Returns a JSON object describing the secret including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "secret_number": {
+            "type": "integer",
+            "description": "The number identifying the secret."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_secret",
+      "description": "Get a secret on GitHub. Requires appropriate scopes. Returns a JSON object describing the secret including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "secret_number": {
+            "type": "integer",
+            "description": "The number identifying the secret."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_webhook",
+      "description": "List a webhook on GitHub. Requires appropriate scopes. Returns a JSON object describing the webhook including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "webhook_number": {
+            "type": "integer",
+            "description": "The number identifying the webhook."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_webhook",
+      "description": "Get a webhook on GitHub. Requires appropriate scopes. Returns a JSON object describing the webhook including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "webhook_number": {
+            "type": "integer",
+            "description": "The number identifying the webhook."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_deployment",
+      "description": "List a deployment on GitHub. Requires appropriate scopes. Returns a JSON object describing the deployment including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "deployment_number": {
+            "type": "integer",
+            "description": "The number identifying the deployment."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_deployment",
+      "description": "Get a deployment on GitHub. Requires appropriate scopes. Returns a JSON object describing the deployment including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "deployment_number": {
+            "type": "integer",
+            "description": "The number identifying the deployment."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_environment",
+      "description": "List a environment on GitHub. Requires appropriate scopes. Returns a JSON object describing the environment including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "environment_number": {
+            "type": "integer",
+            "description": "The number identifying the environment."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_environment",
+      "description": "Get a environment on GitHub. Requires appropriate scopes. Returns a JSON object describing the environment including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "environment_number": {
+            "type": "integer",
+            "description": "The number identifying the environment."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_tag",
+      "description": "List a tag on GitHub. Requires appropriate scopes. Returns a JSON object describing the tag including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "tag_number": {
+            "type": "integer",
+            "description": "The number identifying the tag."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_tag",
+      "description": "Get a tag on GitHub. Requires appropriate scopes. Returns a JSON object describing the tag including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "tag_number": {
+            "type": "integer",
+            "description": "The number identifying the tag."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_discussion",
+      "description": "List a discussion on GitHub. Requires appropriate scopes. Returns a JSON object describing the discussion including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "discussion_number": {
+            "type": "integer",
+            "description": "The number identifying the discussion."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_discussion",
+      "description": "Get a discussion on GitHub. Requires appropriate scopes. Returns a JSON object describing the discussion including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "discussion_number": {
+            "type": "integer",
+            "description": "The number identifying the discussion."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "list_package",
+      "description": "List a package on GitHub. Requires appropriate scopes. Returns a JSON object describing the package including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "package_number": {
+            "type": "integer",
+            "description": "The number identifying the package."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    },
+    {
+      "name": "get_package",
+      "description": "Get a package on GitHub. Requires appropriate scopes. Returns a JSON object describing the package including id, node_id, url, html_url, created_at, updated_at and related metadata fields.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "Repository owner (user or organization login)."
+          },
+          "repo": {
+            "type": "string",
+            "description": "Repository name without the owner prefix."
+          },
+          "package_number": {
+            "type": "integer",
+            "description": "The number identifying the package."
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Results per page (max 100).",
+            "default": 30
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number of the results to fetch.",
+            "default": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "all"
+            ],
+            "description": "Filter by state."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "created",
+              "updated",
+              "comments"
+            ],
+            "description": "Sort field."
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "description": "Sort direction."
+          },
+          "body": {
+            "type": "string",
+            "description": "Body text / payload for the operation."
+          }
+        },
+        "required": [
+          "owner",
+          "repo"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+Hey, could you please help me with the SentinelOps incidents API? I would really appreciate it if you could carefully refactor the handler so it keeps auth intact, makes severity filtering more efficient, and avoids breaking the existing serviceId+title+severity deduplication fingerprint. Please explain the files you would edit and be careful not to change behavior accidentally.

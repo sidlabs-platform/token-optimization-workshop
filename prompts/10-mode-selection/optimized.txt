@@ -1,0 +1,3 @@
+Research: find severity order, incidents route, tests.
+Plan: add minSeverity with success criteria.
+Agent: implement only that plan; pass targeted tests.

@@ -1,0 +1,7 @@
+Worker subagent digest for SentinelOps `minSeverity` discovery:
+Relevant files: `app/packages/api/src/routes/incidents.ts`, `app/packages/api/src/routes/incidents.test.ts`, `app/packages/shared/src/types/severity.ts`, `app/packages/shared/src/types/filters.ts`.
+Current behavior: GET /api/incidents supports exact `severity`; incident ingestion deduplicates active matches by serviceId + title + severity and increments duplicateCount.
+Severity order source: shared severity type exports low < medium < high < critical.
+Recommended edit: add optional `minSeverity` to filter types; in the route, map severities to rank and include incidents whose rank is >= requested rank. Keep exact `severity` behavior; if both params appear, apply both filters predictably or reject per existing validation style.
+Tests: high returns high+critical; medium returns medium+high+critical; exact severity still returns only that severity; invalid minSeverity is rejected.
+Risk: do not duplicate severity ordering in web code; reuse the shared source.

@@ -1,0 +1,3 @@
+Investigate SentinelOps incident routing without any budget limit. Use the strongest model for all
+steps. If uncertain, reload the entire repository summary, MCP schema catalog, package manifests,
+recent logs, and test output again. Continue until fully confident; do not stop for token usage.

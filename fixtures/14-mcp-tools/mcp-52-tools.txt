@@ -1,0 +1,12 @@
+MCP CATALOG for this SentinelOps incident task (52 tools enabled):
+
+Keep:
+- github.search_code, github.get_file, github.list_prs
+- postgres_prod.query_incidents(read_only), explain, list_tables, describe_table, sample_rows
+- observability.search_logs, get_trace
+- feature_flags.get_flag
+
+Disable until requested: Slack, Jira, CRM, billing, admin identity, deploy writes, analytics,
+non-prod DBs, cache/CDN, docs, calendar, campaigns.
+
+Policy: every enabled schema must help answer production incident dedupe questions.

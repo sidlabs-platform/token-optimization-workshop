@@ -1,0 +1,1 @@
+Write a TypeScript helper for SentinelOps severity filtering. Please explain the idea, mention why ordering matters, show the code, describe edge cases, and finish with a summary.

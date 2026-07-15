@@ -1,0 +1,2 @@
+For this incident task, expose only GitHub file/search plus read-only production incident DB tools.
+Disable Slack, Jira, CRM, admin, billing, analytics, and non-prod DB schemas until requested.

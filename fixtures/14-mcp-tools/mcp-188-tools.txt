@@ -1,0 +1,65 @@
+MCP CATALOG INJECTED THIS TURN (188 tools):
+
+slack.search_messages {query, channels, start_time, end_time, include_threads, include_files}
+slack.post_message {channel, text, blocks, thread_ts, unfurl_links, unfurl_media}
+slack.update_message {channel, ts, text, blocks}
+slack.list_channels {team_id, include_archived, types, limit}
+slack.get_user {user_id, include_profile, include_status}
+slack.invite_user {channel, user_id}
+slack.export_channel {channel, since, until, include_threads}
+
+jira.search_issues {jql, fields, max_results, expand, validate_query}
+jira.create_issue {project, issue_type, summary, description, labels, priority}
+jira.update_issue {issue_key, fields, notify_users}
+jira.transition_issue {issue_key, transition_id, comment}
+jira.add_comment {issue_key, body, visibility}
+jira.list_projects {include_archived, category}
+jira.get_sprint {board_id, sprint_id}
+jira.create_sprint {board_id, name, start_date, end_date}
+
+github.search_code {query, repo, language, path, ref}
+github.get_file {owner, repo, path, ref}
+github.create_pr {repo, title, body, head, base, draft}
+github.merge_pr {repo, number, method, delete_branch}
+github.list_workflows {repo, state}
+github.rerun_workflow {repo, run_id, failed_only}
+github.admin_update_branch_protection {repo, branch, rules}
+
+postgres_prod.query_incidents {sql, parameters, timeout_ms, read_only}
+postgres_prod.explain {sql, analyze, buffers}
+postgres_prod.list_tables {schema, include_views}
+postgres_prod.describe_table {schema, table}
+postgres_prod.sample_rows {table, limit, where}
+postgres_staging.query_incidents {sql, parameters, timeout_ms}
+postgres_staging.write_fixture {table, rows, truncate_first}
+postgres_dev.query_incidents {sql, parameters, timeout_ms}
+postgres_dev.reset_database {confirm, seed_profile}
+postgres_preview.query_incidents {sql, parameters, timeout_ms}
+postgres_preview.drop_schema {schema, confirm}
+postgres_analytics.query_events {sql, parameters, warehouse, timeout_ms}
+postgres_analytics.export_csv {sql, destination, include_header}
+
+notion.search_pages {query, database_id, filter, sort}
+notion.create_page {database_id, properties, children}
+notion.update_page {page_id, properties, archived}
+billing.lookup_customer {customer_id, email, include_invoices}
+billing.refund_invoice {invoice_id, amount, reason}
+billing.update_plan {customer_id, plan_id, effective_date}
+crm.search_accounts {query, owner, segment, region}
+crm.update_account {account_id, fields}
+feature_flags.get_flag {key, environment}
+feature_flags.set_flag {key, environment, value, rollout, reason}
+deploy.start_rollout {service, environment, version, strategy}
+deploy.rollback {service, environment, version, reason}
+identity.find_user {email, tenant, include_groups}
+identity.disable_user {user_id, reason, ticket}
+identity.add_group {user_id, group_id, expires_at}
+observability.search_logs {service, query, since, until, limit}
+observability.get_trace {trace_id, include_spans}
+observability.create_dashboard {name, widgets, folder}
+
+The remaining tools repeat the same schema pattern for notifications, calendar, docs, warehouse,
+experiments, pager, mobile builds, secrets inventory, package registry, Kubernetes admin, cache
+flushes, CDN purge, synthetic checks, customer support macros, email campaigns, and five duplicate
+read/write database environments. All 188 schemas are sent on every SentinelOps agent step, even
+when the user only asks: "Why did production dedupe create duplicate Sev-1 incidents?"

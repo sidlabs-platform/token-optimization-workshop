@@ -1,0 +1,15 @@
+# Graphify answer: incident-ingestion flow  (budget 1500 tokens)
+
+nodes/edges the query returned (no full files read):
+
+routes/incidents.ts  POST /api/incidents
+  └─calls→ ingestion/ingestIncident.ts  ingestIncident(payload)
+        ├─validate→ shared/validators.ts  validateIncidentPayload()
+        ├─normalize→ shared/types/ingestion.ts  normalizeIncoming()
+        ├─dedup→ shared/lib/alertDedup.ts  dedupeAlerts(key = service+title+severity window)
+        └─persist→ api/data/store.ts  store.addIncident()
+
+Summary: an incoming payload is validated, normalized, deduped against a recent
+window (same service+title+severity), then stored. Duplicates increment a count
+instead of inserting. This answers the question from the graph — the agent never
+had to read the 6 source files verbatim.

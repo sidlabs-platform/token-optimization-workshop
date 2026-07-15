@@ -1,0 +1,8 @@
+{
+  "task": "Report whether the shared tests and api type-check pass, and how many tests ran.",
+  "quality_check": "Both answers must report the type-check passes with 0 errors and the shared suite passes (60 tests).",
+  "model": "claude-sonnet-4.5",
+  "technique": "Pipe verbose tool output through RTK (rtk vitest / rtk tsc) so the model ingests a compact summary instead of the full logs.",
+  "expected": "Optimized uses far fewer input (\u2191) tokens because RTK compresses the tool output the model reads.",
+  "requires": ["rtk"]
+}

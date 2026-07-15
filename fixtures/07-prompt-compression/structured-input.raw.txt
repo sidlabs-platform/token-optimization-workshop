@@ -1,0 +1,1 @@
+Update the SentinelOps incidents endpoint so dashboard clients can request incidents at a minimum severity or worse. Query param: minSeverity. Reuse shared severity ordering, combine with status and service filters, keep exact severity filtering, and return the current API validation style for invalid severity values.

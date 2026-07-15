@@ -1,0 +1,27 @@
+WORKFLOW POLICY: use claude-opus-4.8 for every activity in this SentinelOps task, because we want
+maximum intelligence at all times. Before every turn, restate the project: SentinelOps is a
+TypeScript incident dashboard with `app/packages/api`, `app/packages/web`, shared incident types,
+severity levels critical/high/medium/low, deduplication based on normalized service/title/severity,
+MCP tools for GitHub, Jira, Slack, database inspection, and deployment notes. Repeat that context
+before planning, repeat it before editing, repeat it before running tests, and repeat it before the
+final answer so no model forgets the domain.
+
+TURN 1 OPUS: Think deeply about changing severity routing. Include the entire SentinelOps domain
+summary, API structure, incident ingestion flow, deduplication behavior, model list, tools list,
+quality gates, and rollout constraints. Produce a long plan with every assumption.
+
+TURN 2 OPUS: Implement the TypeScript changes. Again restate the dashboard purpose, API package,
+shared models, incident table fields, deduplication fingerprint, testing approach, and deployment
+constraints before touching files. Use the frontier model even though this is mostly mechanical
+editing.
+
+TURN 3 OPUS: Look up exact filenames and enum members. Re-explain the same SentinelOps context,
+then search for `severity`, `ingestIncident`, `duplicateCount`, `MCP`, and dashboard filters. Use
+Opus for these lookups and include verbose observations.
+
+TURN 4 OPUS: Run tests and summarize. Re-load the project explanation, quote the relevant files,
+explain why each tool is available, then provide the final report. Every handoff should include the
+full repo overview, all known conventions, and a reminder that SentinelOps uses TypeScript.
+
+COST NOTE: one frontier model performs planning, coding, lookup, test-log reading, and summary.
+Estimated workflow budget: all-Opus 50 units, with repeated prompt context on every step.

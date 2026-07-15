@@ -1,0 +1,11 @@
+Q: Where is incident filtering handled, end to end?
+
+A (from code graph, budget 900 tok):
+- Filter shape:      shared/src/types/filters.ts  -> IncidentFilters {severity,serviceId,status,search}
+- Match predicate:   shared/src/utils/query.ts    -> incidentMatchesFilters(incident, filters)
+- API entrypoint:    api/src/routes/incidents.ts  -> GET '/' builds IncidentFilters from req.query
+- Store apply:       api/src/data/store.ts        -> listIncidents(filters) => incidents.filter(matches)
+- Web -> query:      web/src/api/client.ts        -> getIncidents() serializes filters to querystring
+- Web state:         web/src/store/filtersSlice.ts + hooks/useIncidentFilters.ts
+
+To add an 'acknowledged' filter: edit filters.ts (type), query.ts (predicate), incidents.ts (parse).

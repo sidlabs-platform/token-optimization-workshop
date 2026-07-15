@@ -1,0 +1,31 @@
+[Model policy: pin Opus 4.8 for every step of the escalation feature. Re-explain the repo each turn.]
+
+--- turn 1 (Opus) ---
+SentinelOps is a TypeScript monorepo (shared, api, web). Incidents have
+severity/status; there is a store, an Express incidents router, a stats aggregator, and a React
+dashboard. House rules: optional fields only, no migrations, surgical edits, terse replies.
+Look up the exact field name used for acknowledgement time on Incident and the status enum values.
+
+--- turn 2 (Opus) ---
+SentinelOps is a TypeScript monorepo (shared, api, web). Incidents have
+severity/status; there is a store, an Express incidents router, a stats aggregator, and a React
+dashboard. House rules: optional fields only, no migrations, surgical edits, terse replies.
+Grep for every place incidents are filtered so I know where to add the escalated predicate.
+
+--- turn 3 (Opus) ---
+SentinelOps is a TypeScript monorepo (shared, api, web). Incidents have
+severity/status; there is a store, an Express incidents router, a stats aggregator, and a React
+dashboard. House rules: optional fields only, no migrations, surgical edits, terse replies.
+Now design the escalation rule and its edge cases (idempotency, resolved incidents, clock skew).
+
+--- turn 4 (Opus) ---
+SentinelOps is a TypeScript monorepo (shared, api, web). Incidents have
+severity/status; there is a store, an Express incidents router, a stats aggregator, and a React
+dashboard. House rules: optional fields only, no migrations, surgical edits, terse replies.
+Implement escalateIncident and wire it into the store and routes.
+
+--- turn 5 (Opus) ---
+SentinelOps is a TypeScript monorepo (shared, api, web). Incidents have
+severity/status; there is a store, an Express incidents router, a stats aggregator, and a React
+dashboard. House rules: optional fields only, no migrations, surgical edits, terse replies.
+Write the unit tests and update the affected API tests.

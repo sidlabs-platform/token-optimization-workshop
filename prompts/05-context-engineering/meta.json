@@ -1,0 +1,8 @@
+{
+  "task": "Produce a plan (no code) to add a minSeverity filter to the incidents endpoint.",
+  "quality_check": "Both plans must name the severity types file, the incidents route, and the filter types file, and reuse the existing severity ordering.",
+  "model": "claude-sonnet-4.5",
+  "technique": "Replace a bloated prose prompt with an XML-structured, scoped prompt (<task>/<context>/<constraints>) that points at the exact files.",
+  "expected": "Optimized uses fewer input (\u2191) tokens (less prompt bloat + no repo-wide exploration) for an equal-or-better plan.",
+  "requires": []
+}

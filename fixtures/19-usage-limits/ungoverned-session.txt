@@ -1,0 +1,19 @@
+SESSION POLICY: no usage limit. The SentinelOps production incident dashboard is important, so use
+the most capable model for every step and do not worry about token consumption. If any doubt exists,
+reload all context: repository overview, `app/packages/api` tree, `app/packages/web` tree, shared
+models, MCP tool schemas, package manifests, lockfiles, previous test logs, incident examples,
+deployment notes, and the full conversation history.
+
+INVESTIGATION LOG:
+1. Load entire repo summary before searching for severity routing.
+2. Load all MCP schemas because a tool might be needed later.
+3. Search for `severity`, then paste every match into context.
+4. Re-open the same incident model because the model may have forgotten it.
+5. Read full `npm test` output including passing suites and install warnings.
+6. Switch to the strongest model for filename lookup, enum lookup, and log trimming.
+7. Before final response, reload the repo summary, API structure, dashboard structure, incident
+   deduplication explanation, package manager notes, and all previous observations.
+
+No cap is configured. Overage is acceptable if the answer is thorough. Continue until confidence is
+absolute. Estimated monthly pattern: 30%+ uncontrolled overage when several SentinelOps incidents
+arrive in one week.

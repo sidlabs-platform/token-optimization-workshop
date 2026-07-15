@@ -1,0 +1,8 @@
+{
+  "task": "Ask Copilot to refactor SentinelOps incident filtering and deduplication safely.",
+  "quality_check": "The response must preserve auth checks, keep severity filtering compatible, and avoid changing the incident fingerprint format used for deduplication.",
+  "model": "claude-sonnet-4.5",
+  "technique": "Prompt compression: remove polite filler and encode API details as terse, structured input.",
+  "expected": "Optimized uses fewer input (↑) tokens while preserving the same task and acceptance criteria.",
+  "requires": []
+}

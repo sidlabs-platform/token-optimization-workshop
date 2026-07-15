@@ -1,0 +1,1 @@
+Put today's date, active ticket IDs, sprint status, reordered notes, API rules, web rules, docs rules, and every incident-dashboard convention at the top of one always-on Copilot instruction file.

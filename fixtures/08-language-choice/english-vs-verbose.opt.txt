@@ -1,0 +1,1 @@
+Plan safe SentinelOps dedupe fix: inspect ingestIncident.ts, keep serviceId+title+severity stable, add regression test, avoid unrelated route/filter edits.

@@ -1,0 +1,23 @@
+{
+  "_comment": "Editable pricing + ET multipliers. Prices are USD per 1,000,000 tokens. ET = m * (1.0*I + 0.1*C + 4.0*O). Cached input billed at (1 - cachedInputDiscount) of input price (~90% off => 0.9). Keys match GitHub Copilot CLI --model ids so the matrix runner can look up ET/$ per model. NOTE: GPT/MAI ET multipliers are comparison-tier assignments (ET is a Claude-origin metric); prices for non-Opus models are best-effort placeholders — EDIT to match your contract.",
+  "defaultModel": "opus-4.8",
+  "etWeights": { "input": 1.0, "cached": 0.1, "output": 4.0 },
+  "modelPairs": [
+    { "tier": "flagship", "claude": "claude-opus-4.8", "openai": "gpt-5.6-sol",  "note": "Opus 4.8 vs GPT-5.6 Sol" },
+    { "tier": "mid",      "claude": "claude-sonnet-5",  "openai": "gpt-5.6-terra","note": "Sonnet 5 vs GPT-5.6 Terra" },
+    { "tier": "small",    "claude": "claude-haiku-4.5", "openai": "mai-code-1-flash-picker", "note": "Haiku 4.5 vs MAI-Code-1-Flash" }
+  ],
+  "models": {
+    "haiku-4.5": { "label": "Claude Haiku 4.5", "family": "claude", "etMultiplier": 0.25, "price": { "input": 1.0, "output": 5.0 }, "cachedInputDiscount": 0.9 },
+    "sonnet-4.6": { "label": "Claude Sonnet 4.6", "family": "claude", "etMultiplier": 1.0, "price": { "input": 3.0, "output": 15.0 }, "cachedInputDiscount": 0.9 },
+    "opus-4.8": { "label": "Claude Opus 4.8", "family": "claude", "etMultiplier": 5.0, "price": { "input": 5.0, "output": 25.0 }, "cachedInputDiscount": 0.9 },
+    "gpt-5.5": { "label": "GPT-5.5", "family": "openai", "etMultiplier": 1.0, "price": { "input": 5.0, "output": 30.0 }, "longContext": { "thresholdTokens": 200000, "input": 10.0, "output": 45.0 }, "cachedInputDiscount": 0.9 },
+
+    "claude-opus-4.8": { "label": "Claude Opus 4.8", "family": "claude", "tier": "flagship", "etMultiplier": 5.0, "price": { "input": 5.0, "output": 25.0 }, "cachedInputDiscount": 0.9 },
+    "gpt-5.6-sol": { "label": "GPT-5.6 Sol", "family": "openai", "tier": "flagship", "etMultiplier": 5.0, "price": { "input": 5.0, "output": 30.0 }, "longContext": { "thresholdTokens": 200000, "input": 10.0, "output": 45.0 }, "cachedInputDiscount": 0.9 },
+    "claude-sonnet-5": { "label": "Claude Sonnet 5", "family": "claude", "tier": "mid", "etMultiplier": 1.0, "price": { "input": 3.0, "output": 15.0 }, "cachedInputDiscount": 0.9 },
+    "gpt-5.6-terra": { "label": "GPT-5.6 Terra", "family": "openai", "tier": "mid", "etMultiplier": 1.0, "price": { "input": 2.0, "output": 10.0 }, "cachedInputDiscount": 0.9 },
+    "claude-haiku-4.5": { "label": "Claude Haiku 4.5", "family": "claude", "tier": "small", "etMultiplier": 0.25, "price": { "input": 1.0, "output": 5.0 }, "cachedInputDiscount": 0.9 },
+    "mai-code-1-flash-picker": { "label": "MAI-Code-1-Flash", "family": "microsoft", "tier": "small", "etMultiplier": 0.25, "price": { "input": 0.5, "output": 2.0 }, "cachedInputDiscount": 0.9 }
+  }
+}

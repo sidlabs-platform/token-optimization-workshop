@@ -1,0 +1,20 @@
+Hi there! So I've been working on this SentinelOps project for a little while now and I
+was hoping you could help me out with something. Basically, the thing is, we have this
+dashboard application, and it's a full-stack TypeScript monorepo, and it has a web part
+that's built with React and Vite and Tailwind, and it also has an API part that's built
+with Node and Express and TypeScript, and there's also a shared package that has all the
+common types and utilities and things like that in it.
+
+Anyway, what I really want to do, and I've been thinking about this for a while, is I want
+to add a feature where you can filter the incidents in the incidents table by their
+severity level. You know, like sometimes you only want to see the critical ones, or
+sometimes you only want to see the high priority ones, that kind of thing. So it would be
+really great if there was a dropdown or something like that where you could pick which
+severity level you want to see, and then the table would just show you the incidents that
+match that severity level, and if you pick "all" then it would show you everything again.
+
+Oh, and one more thing, please make sure it matches the dark theme that we already have
+going on in the rest of the app, because otherwise it's going to look really out of place
+and weird. And also could you add some tests for it too? That would be super helpful. I
+think we use Vitest for testing. Thanks so much, I really appreciate all of your help with
+this, you're the best!

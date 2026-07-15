@@ -1,0 +1,3 @@
+Here is the full terminal output from npm ls and npm test. It includes package tree noise, passing
+tests, transform timing, coverage tables, retries, warnings, and one failure. Read all of it and
+figure out why SentinelOps incident severity routing failed.

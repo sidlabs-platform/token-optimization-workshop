@@ -1,0 +1,4 @@
+[/model auto turned on; /subagents sets a lean default sub-agent model — configured once]
+Router: auto (picks a tier per step). Subagents: default sub-agent model set to a mid/small tier
+via /subagents so delegated work doesn't all run on the flagship.
+Just do the work; let auto pick. No per-turn model preamble, no switch confirmations.

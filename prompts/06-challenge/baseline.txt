@@ -1,0 +1,3 @@
+In the app/ directory, run the entire monorepo test suite with `npm test` (all workspaces),
+show me the output, and also open and print the alert-dedup test file so I can see the
+cases. Then confirm that alert deduplication is implemented and that its tests pass.

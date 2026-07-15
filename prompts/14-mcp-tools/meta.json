@@ -1,0 +1,8 @@
+{
+  "task": "Configure MCP tools for a SentinelOps production incident investigation.",
+  "quality_check": "Both answers must preserve SentinelOps constraints: TypeScript incident dashboard context, app/packages/api paths when relevant, severity/deduplication accuracy, and no invented behavior.",
+  "model": "claude-sonnet-4.5",
+  "technique": "Tool pruning: load only task-relevant MCP schemas.",
+  "expected": "188 to 52 tools cuts repeated schema context while preserving essentials.",
+  "requires": []
+}

@@ -1,0 +1,24 @@
+Great question! Let me help you add an acknowledge endpoint. First, I'll walk through my
+understanding of the codebase and the overall architecture so we're on the same page.
+
+SentinelOps is a TypeScript monorepo with three packages — shared, api, and web. The shared
+package holds the domain types and pure logic, the api package is an Express server, and the
+web package is a React dashboard. To add acknowledgement I first considered several possible
+approaches. Approach one would be to store the acknowledgement on the incident record itself.
+Approach two would be to create a separate acknowledgements table/collection. Approach three
+would be an event-sourced log. After weighing the trade-offs of each of these approaches in
+detail, and considering maintainability, testability, performance, and future extensibility,
+I've decided to go with approach one because it is the simplest and fits the existing model.
+
+Now, let me explain each change I'm going to make, step by step, before I make it, and then
+I'll explain it again after I've made it so you can follow along completely...
+
+1. I will add acknowledgedBy and acknowledgedAt to the Incident interface. These will be
+   optional so that all existing seed data and tests keep working without any migration.
+2. I will create a new pure function acknowledgeIncident in a new file so that it is easy to
+   unit test in isolation without spinning up the whole Express server.
+3. I will wire a new route into the incidents router.
+4. I will add a method to the store.
+
+Let me now proceed to implement all of these steps. I'll show you the full file each time.
+(...continues restating every file in full...)

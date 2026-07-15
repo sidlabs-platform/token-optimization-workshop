@@ -1,0 +1,53 @@
+PLAN (from /plan — 5 scoped steps, each run in its own turn with only the files it needs):
+1. shared/lib/escalation.ts  — pure escalateIncident(incident, now, thresholdMs=15*60_000)
+2. shared/types/filters + utils/query — add escalated? to IncidentFilters + predicate
+3. api store + routes        — apply escalation on read; parse ?escalated=true
+4. shared/types/stats + api store.stats() — add escalatedCount (counts read-time escalated incidents)
+5. web filter chip + affected tests (optional in-workshop)
+
+--- STEP 1 CONTEXT ONLY (the rest are fetched per-step, not now) ---
+// ==== app/packages/shared/src/types/incident.ts ====
+import type { Severity } from './severity';
+export type IncidentStatus = 'open' | 'investigating' | 'mitigated' | 'resolved';
+export interface Incident {
+  id: string;
+  serviceId: string;
+  title: string;
+  summary: string;
+  severity: Severity;
+  status: IncidentStatus;
+  source: 'synthetic' | 'prometheus' | 'datadog' | 'pagerduty' | 'manual';
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+  fingerprint: string;
+  duplicateCount: number;
+}
+
+// ==== app/packages/shared/src/lib/alertDedup.ts (style anchor: pure, immutable) ====
+import type { Incident } from '../types/incident';
+import type { IncomingIncidentPayload } from '../types/ingestion';
+import { fingerprint } from '../utils/id';
+export function createAlertFingerprint(
+  payload: Pick<IncomingIncidentPayload, 'serviceId' | 'title' | 'severity'>,
+): string {
+  return fingerprint([payload.serviceId, payload.title, payload.severity]);
+}
+export function findDuplicateIncident(incidents: Incident[], fp: string): Incident | undefined {
+  return incidents.find(
+    (incident) => incident.fingerprint === fp && incident.status !== 'resolved',
+  );
+}
+export function mergeDuplicateIncident(existing: Incident, observedAt: string): Incident {
+  return { ...existing, duplicateCount: existing.duplicateCount + 1, updatedAt: observedAt };
+}
+
+
+<task>Step 1 only: create shared/src/lib/escalation.ts exporting a PURE
+escalateIncident(incident, now, thresholdMs=15*60_000) that returns the incident unchanged
+unless it is acknowledged (acknowledgedAt set), not resolved, and
+(Date.parse(now) - Date.parse(incident.acknowledgedAt)) > thresholdMs, in which case it returns
+a new incident with escalated:true. Timestamps are ISO strings (see createdAt/updatedAt), so
+compare via Date.parse. Never mutate input. Add optional escalated?: boolean to Incident.</task>
+<constraints>Read only the two files above. No repo crawl. <=3 lines of prose.</constraints>
+<note>escalation builds on the acknowledgedAt field you added in Module 1.</note>

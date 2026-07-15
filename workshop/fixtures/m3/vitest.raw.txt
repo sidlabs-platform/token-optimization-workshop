@@ -1,0 +1,39 @@
+> @sentinelops/api@1.0.0 test
+> vitest run --reporter verbose
+
+ RUN  v2.1.8 C:/token-optimization-workshop/app/packages/api
+
+ ✓ src/routes/incidents.test.ts > incidents api > lists seeded incidents  16.1ms
+ ✓ src/routes/incidents.test.ts > incidents api > filters incidents by severity critical  25.6ms
+ ✓ src/routes/incidents.test.ts > incidents api > filters incidents by severity high  5.5ms
+ ✓ src/routes/incidents.test.ts > incidents api > filters incidents by severity medium  24.2ms
+ ✓ src/routes/incidents.test.ts > incidents api > filters incidents by severity low  16.5ms
+ ✓ src/routes/incidents.test.ts > incidents api > filters incidents by status open  20.2ms
+ ✓ src/routes/incidents.test.ts > incidents api > filters incidents by status investigating  16.9ms
+ ✓ src/routes/incidents.test.ts > incidents api > filters incidents by status mitigated  20.0ms
+ ✓ src/routes/incidents.test.ts > incidents api > filters incidents by status resolved  6.9ms
+ ✓ src/routes/incidents.test.ts > incidents api > filters incidents by service id  25.5ms
+ ✓ src/routes/incidents.test.ts > incidents api > filters incidents by search text  16.2ms
+ ✓ src/routes/incidents.test.ts > incidents api > gets an incident by id  9.8ms
+ ✓ src/routes/incidents.test.ts > incidents api > returns 404 for missing incident  24.9ms
+
+ ✓ src/routes/incidents.ack.test.ts > incident acknowledgement api > acknowledges an open incident and moves it to investigating  18.3ms
+ ✓ src/routes/incidents.ack.test.ts > incident acknowledgement api > rejects ack with missing engineerId (400)  23.6ms
+ ✓ src/routes/incidents.ack.test.ts > incident acknowledgement api > rejects ack from an unknown engineer (404)  8.0ms
+ ✓ src/routes/incidents.ack.test.ts > incident acknowledgement api > rejects ack from an off-shift engineer (409)  31.1ms
+ ✓ src/routes/incidents.ack.test.ts > incident acknowledgement api > returns 404 for acknowledging a missing incident  24.5ms
+ ✓ src/routes/incidents.ack.test.ts > incident acknowledgement api > assigns an incident to an engineer  6.7ms
+ ✓ src/routes/incidents.ack.test.ts > incident acknowledgement api > filters incidents by acknowledged=false  29.8ms
+ ✓ src/routes/incidents.ack.test.ts > incident acknowledgement api > reflects an acknowledgement in the acknowledged=true filter  27.5ms
+
+ ✓ src/routes/services.test.ts > services api > lists services  8.9ms
+ ✓ src/routes/services.test.ts > services api > gets a service by id  25.9ms
+ ✓ src/routes/services.test.ts > services api > returns 404 for missing service  19.8ms
+
+ ✓ src/routes/stats.test.ts > stats api > returns dashboard stats  22.9ms
+ ✓ src/routes/stats.test.ts > stats api > aggregates incidents by severity  23.8ms
+
+ Test Files  4 passed (4)
+      Tests  26 passed (26)
+   Start at  19:35:07
+   Duration  1.42s (transform 690ms, setup 0ms, collect 1.50s, tests 92ms)

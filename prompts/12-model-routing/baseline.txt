@@ -1,0 +1,5 @@
+Use claude-opus for every step of this SentinelOps task. Re-read the repo summary before each
+turn. Explain the dashboard, API package, incident model, severity enum, deduplication strategy,
+MCP tools, testing approach, and rollout concerns before planning, before editing, before checking
+field names, and before summarizing. Keep all work on the same frontier model even for simple
+lookups.

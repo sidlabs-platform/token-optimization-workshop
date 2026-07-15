@@ -1,0 +1,8 @@
+{
+  "task": "Provide repository instructions for agents working on SentinelOps.",
+  "quality_check": "Both answers must preserve SentinelOps constraints: TypeScript incident dashboard context, app/packages/api paths when relevant, severity/deduplication accuracy, and no invented behavior.",
+  "model": "claude-sonnet-4.5",
+  "technique": "AGENTS hygiene: landmines only, no inferable encyclopedia.",
+  "expected": "Fewer injected input tokens while retaining behavior-changing warnings.",
+  "requires": []
+}

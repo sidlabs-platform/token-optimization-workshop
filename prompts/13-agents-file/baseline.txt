@@ -1,0 +1,5 @@
+Read this full AGENTS.md before each task. SentinelOps is a modern TypeScript and Python incident
+management repository. The API is in app/packages/api, the web app is in app/packages/web, tests
+should pass, code should be clean, variables should be descriptive, and agents should inspect files
+before editing. The repo uses Git and package managers. Remember every convention listed here even
+when package manifests already show it.
