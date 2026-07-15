@@ -13,8 +13,8 @@ four modules, so everything you learn compounds:
 
 | Module | You do (tasks) | Optimization techniques | Measured |
 |---|---|---|---|
-| **1 — Build the lean way** (45m) | Add `POST /:id/ack`, ack fields, pure ack logic | Context scoping · XML prompts · output control | ~85–90% input, ~70% output |
-| **2 — Query & navigate** (45m) | Add assignment + `acknowledged` filter | Query-don't-read · RTK compression · AGENTS caching · MCP hygiene | ~90% on queries, 15–95% on tool output |
+| **1 — Build the lean way** (45m) | Add `POST /:id/ack`, ack fields, pure ack logic | Context scoping · XML prompts · output control (**Caveman**) | ~85–90% input, ~70% output |
+| **2 — Query & navigate** (45m) | Add assignment + `acknowledged` filter | Query-don't-read (**Graphify**) · **RTK** compression (`rtk init --copilot`) · AGENTS caching · MCP hygiene | ~90% on queries, 15–95% on tool output |
 | **3 — Test & harden** (40m) | Unit + API tests, debug, stats challenge | Scoped test-gen · compressed test/tsc output · model routing · session lifecycle | ~90%+ on logs, ET collapse via routing |
 | **4 — Optimize the agent loop** (50m) | Add the **escalation policy** (multi-file) | Task breakdown (`/plan`) · context mgmt (`/compact`) · model selection (`/model`) · auto model (`/model auto`) · reasoning depth | ~54–91% across the five levers |
 
@@ -44,8 +44,17 @@ node workshop/fixtures/generate.mjs     # build measured fixtures from the real 
 bash scripts/setup.sh
 node workshop/fixtures/generate.mjs
 ```
-Optional real tools (fixtures are used automatically if absent):
-`./scripts/install-tools.ps1` installs **RTK**, **ripgrep**, **Graphify**, **Caveman**.
+### Power tools — install once, then they apply automatically
+The three tools that do the heavy lifting are installed by one script and **wired in once** so you
+never invoke them per-prompt (fixtures are used automatically if a tool is absent):
+```powershell
+./scripts/install-tools.ps1      # RTK + ripgrep + Graphify + Caveman  (bash scripts/install-tools.sh)
+rtk init --copilot               # Module 2.3 — hook: Copilot auto-compresses tool output
+graphify .                       # Module 2.1 — build the code graph once, then query it cheaply
+# Caveman: Module 1.3 — /caveman ultra + automatic read-deduplication
+```
+Each tool is introduced, installed, and used inside the module noted above — no separate "tools"
+detour. Full details: [`../SETUP.md`](../SETUP.md).
 
 ## The metric — Effective Tokens (ET)
 ```

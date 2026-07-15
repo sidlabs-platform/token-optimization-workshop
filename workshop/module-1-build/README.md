@@ -5,7 +5,8 @@
 > build the first slice of that feature **with GitHub Copilot** — and you measure how much
 > cheaper the *lean* way is than the *naive* way.
 
-**Techniques practised:** context scoping · XML-structured prompts · output control.
+**Techniques practised:** context scoping · XML-structured prompts · output control (+ **Caveman**
+ultra mode & read-dedup, wired once).
 **You will touch (app is the starter):**
 `shared/src/types/incident.ts`, a new `shared/src/lib/acknowledge.ts`,
 `api/src/data/store.ts`, `api/src/routes/incidents.ts`.
@@ -97,9 +98,10 @@ It should pass. (Full tests come in Module 3 — here we just keep the build gre
 
 ---
 
-## Exercise 1.3 — Control the output  ⏱ 10 min
+## Exercise 1.3 — Control the output (and make it automatic with Caveman)  ⏱ 10 min
 
-**Goal:** output tokens cost **4× input** in the ET model — cut them without losing signal.
+**Goal:** output tokens cost **4× input** in the ET model — cut them without losing signal, and make
+that the *default* instead of nagging "be terse" every turn.
 
 1. Ask Copilot to summarise the change it just made **twice**:
    - once with the **❌ verbose** style prompt, once with the **✅ terse** style prompt
@@ -109,9 +111,24 @@ It should pass. (Full tests come in Module 3 — here we just keep the build gre
    terse gap is almost entirely **output** tokens.
 3. Note how a **~70% output reduction** becomes an outsized ET win because output is worth **4×**.
 
+### Make terse the default — Caveman (the effective way)
+Rather than repeating "be terse" every prompt, install **Caveman** and let it enforce dense output and
+skip re-reads automatically for output-heavy sub-tasks:
+```powershell
+./scripts/install-tools.ps1   # installs Caveman under Node 22 (its native dep needs an LTS build)
+caveman --version
+```
+- Turn on **ultra** output mode once — `/caveman ultra` (vs `/caveman off`) — and every reply stays
+  information-dense for the rest of the session; no per-prompt "be terse".
+- Its **read-deduplication cache** returns a file's full content once, then a tiny stub on repeats, so
+  an agent that re-opens the same file 3× stops paying 3× — **automatically**, nothing to type.
+- Use Caveman for the output-heavy passes (bulk boilerplate, repeated-read refactors); measured
+  ≈**85%** fewer output ET and ≈**61%** on read-dedup.
+
 **Checkpoint:** you can explain *why* trimming ~250 output tokens saved multiples of that in Effective
-Tokens. (Offline fallback: `measure.ps1` compares `agent-output.verbose.txt` vs
-`agent-output.terse.txt` with `--as-output`.)
+Tokens — and how `/caveman ultra` + read-dedup make that the default without per-prompt effort.
+(Offline fallback: `measure.ps1` compares `agent-output.verbose.txt` vs `agent-output.terse.txt`
+with `--as-output`.)
 
 ---
 
