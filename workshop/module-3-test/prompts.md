@@ -1,6 +1,7 @@
 # Module 3 — prompt pairs (paste into Copilot)
 
-Run `./workshop/module-3-test/measure.ps1` for the measured deltas.
+Run each pair through Copilot and read the real token delta from your **agent debug log** / `/usage`
+(see [`MEASURING.md`](../MEASURING.md)).
 
 ---
 

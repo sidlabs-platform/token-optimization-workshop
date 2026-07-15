@@ -18,8 +18,10 @@ four modules, so everything you learn compounds:
 | **3 — Test & harden** (40m) | Unit + API tests, debug, stats challenge | Scoped test-gen · compressed test/tsc output · model routing · session lifecycle | ~90%+ on logs, ET collapse via routing |
 | **4 — Optimize the agent loop** (50m) | Add the **escalation policy** (multi-file) | Task breakdown (`/plan`) · context mgmt (`/compact`) · model selection (`/model`) · auto model (`/model auto`) · reasoning depth | ~54–91% across the five levers |
 
-Each module folder has a step-by-step `README.md`, a `prompts.md` with **❌ baseline vs ✅
-optimized** prompt pairs, and a `measure.ps1`/`measure.sh` that prints the real token/ET/$ delta.
+Each module folder has a step-by-step `README.md` and a `prompts.md` with **❌ baseline vs ✅
+optimized** prompt pairs. You read the **real** token/credit delta straight from Copilot's **agent
+debug logs** (and `/usage` · `/context`) — see **[`MEASURING.md`](MEASURING.md)**. An optional
+`measure.ps1`/`measure.sh` fixture check is included as an offline fallback.
 
 ## Agenda (200 min)
 | Time | Segment |
@@ -29,7 +31,7 @@ optimized** prompt pairs, and a `measure.ps1`/`measure.sh` that prints the real 
 | 0:55–1:40 | [Module 2 — Query & navigate the large codebase](module-2-query/README.md) |
 | 1:40–2:20 | [Module 3 — Test & harden efficiently](module-3-test/README.md) |
 | 2:20–3:10 | [Module 4 — Advanced agent-loop optimization](module-4-advanced/README.md) |
-| 3:10–3:20 | Wrap + scoreboard + Q&A |
+| 3:10–3:20 | Wrap + `/usage` recap + Q&A |
 
 ## Setup (do once, ~5 min)
 ```powershell
@@ -54,17 +56,24 @@ ET = m × (1.0·I + 0.1·C + 4.0·O)
 - **Cached input is ~90% off** → front-load stable context (Module 2.4).
 - **Model tier multiplies everything** → route work to the cheapest capable model (Module 3.3).
 
-## How to measure anything
-```powershell
-node bench/token-count.mjs --file <path>
-node bench/compare.mjs --raw-file A --opt-file B --demo d --scenario s   # A/B + record
-node bench/report.mjs                                                    # -> results/RESULTS.md
-```
-`compare.mjs` **exits non-zero if a change fails to save tokens**, so your savings are real.
+## How to see your token usage — read it from Copilot itself
+You don't need any external script to see your savings. GitHub Copilot reports the **actual** tokens
+and AI credits for every turn:
+- **Agent debug logs (preferred):** start the CLI with `copilot --log-level all --log-dir ./copilot-logs`,
+  run your ❌ baseline then ✅ optimized prompt (in separate sessions), and read the per-request
+  **input / output / cached** token counts from the newest log file.
+- **`/usage`** — session tokens + AI credits, any time in-session.
+- **`/context`** — how full the context window is (watch it shrink after `/compact`).
 
-## Run every measurement at once (scoreboard)
+Full how-to (with the exact grep/`tail` commands): **[`MEASURING.md`](MEASURING.md)**. Read the
+baseline number, read the optimized number, and the **delta is your saving**.
+
+## Optional offline fallback (no live Copilot access)
+If you're running without Copilot access, each module also ships a `measure.ps1` / `measure.sh` that
+tokenizes the captured baseline vs optimized fixtures with the same tokenizer — a deterministic
+classroom number. It's a **fallback**, not the main method.
 ```powershell
-./workshop/scoreboard.ps1        # runs all four modules' measures + prints the board
+./workshop/scoreboard.ps1        # runs all four modules' fixture measures + prints the board
 Get-Content results/RESULTS.md
 ```
 
@@ -91,6 +100,7 @@ Reset to the starter state with `git checkout -- app/` and delete the added file
 ```
 workshop/
   README.md            this guide
+  MEASURING.md         how to read real token usage from Copilot (debug logs · /usage · /context)
   module-1-build/      README + prompts.md + measure.ps1/.sh
   module-2-query/      README + prompts.md + measure.ps1/.sh
   module-3-test/       README + prompts.md + measure.ps1/.sh

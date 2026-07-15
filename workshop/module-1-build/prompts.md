@@ -1,7 +1,8 @@
 # Module 1 — prompt pairs (paste into Copilot)
 
 Each pair produces the **same result**; the optimized one uses far fewer tokens.
-Run `./workshop/module-1-build/measure.ps1` to see the measured delta.
+Run each pair through GitHub Copilot and read the real token delta from your **agent debug log** or
+`/usage` — see [`MEASURING.md`](../MEASURING.md). (No external script needed.)
 
 ---
 

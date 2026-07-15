@@ -18,10 +18,15 @@
 ## Before you start (2 min)
 ```powershell
 # from the repo root, one time for the whole workshop
-./scripts/setup.ps1                 # installs bench + app deps, verifies fixtures
-node workshop/fixtures/generate.mjs # (re)build the measured fixtures from the real app
+./scripts/setup.ps1                 # installs app deps
 ```
-Open the repo in **GitHub Copilot CLI** (or your IDE Copilot). Keep a terminal handy for `bench/`.
+Open the repo in the **GitHub Copilot CLI** with **debug logging on**, so every turn records its real
+token usage:
+```powershell
+copilot --log-level all --log-dir .\copilot-logs
+```
+Throughout the module you'll read your savings from these logs and from `/usage` · `/context` — see
+[`../MEASURING.md`](../MEASURING.md). (No external script required.)
 
 ---
 
@@ -32,14 +37,16 @@ Open the repo in **GitHub Copilot CLI** (or your IDE Copilot). Keep a terminal h
 1. In Copilot, run the **❌ baseline** prompt from [`prompts.md`](prompts.md#11) — the one that
    says *"explore the whole repository thoroughly, then add an acknowledge endpoint."*
 2. Watch what it reads: the entire `shared` and `api` packages, all the tests, seed data.
-3. Measure the size of that "read everything" context vs the surgical minimum:
-   ```powershell
-   ./workshop/module-1-build/measure.ps1
-   ```
-4. **Record the `context-scoping` line** it prints (raw tokens, ET, $). This is your baseline.
+3. Read how big that "read everything" context was vs the surgical minimum **from Copilot itself**:
+   run `/context` (watch the window balloon on the baseline) and `/usage` after the turn, or read the
+   input-token count from your agent debug log (start Copilot with `--log-level all --log-dir
+   ./copilot-logs`). See [`../MEASURING.md`](../MEASURING.md).
+4. **Record the baseline input tokens** Copilot reports. This is your baseline; the scoped prompt in
+   1.2 is what you compare it against.
 
-> 💡 The fixture `workshop/fixtures/m1/build-context.raw.txt` *is* a real dump of every file a
-> naive session opens — that's why the number is honest.
+> 💡 No script needed — the number comes from your own run. (Offline fallback: the fixture
+> `workshop/fixtures/m1/build-context.raw.txt` is a real dump of every file a naive session opens, and
+> `measure.ps1` tokenizes it for a deterministic classroom number.)
 
 **Checkpoint:** you should see **~85–90% fewer input tokens** for the scoped context.
 
@@ -97,19 +104,18 @@ It should pass. (Full tests come in Module 3 — here we just keep the build gre
 1. Ask Copilot to summarise the change it just made **twice**:
    - once with the **❌ verbose** style prompt, once with the **✅ terse** style prompt
      ([`prompts.md`](prompts.md#13)).
-2. Measure the two summaries (this is the second line `measure.ps1` printed):
-   the `output-control` scenario compares
-   `agent-output.verbose.txt` vs `agent-output.terse.txt` with `--as-output` (4× weight).
-3. Note how a **~70% output reduction** becomes an outsized ET win because of the 4× multiplier.
+2. Compare the two summaries **from Copilot's reported output tokens** — read them from `/usage`
+   (or the output-token entries in your agent debug log) right after each summary. The verbose vs
+   terse gap is almost entirely **output** tokens.
+3. Note how a **~70% output reduction** becomes an outsized ET win because output is worth **4×**.
 
-**Checkpoint:** you can explain *why* trimming 254 output tokens saved ~5,000 ET.
+**Checkpoint:** you can explain *why* trimming ~250 output tokens saved multiples of that in Effective
+Tokens. (Offline fallback: `measure.ps1` compares `agent-output.verbose.txt` vs
+`agent-output.terse.txt` with `--as-output`.)
 
 ---
 
 ## Wrap (3 min)
-```powershell
-node bench/report.mjs      # your Module 1 rows on the scoreboard
-```
-You built a real API slice while asking the model to read ~1/8 of the code and emit ~1/3 of
-the prose. **Same feature, a fraction of the tokens.** Module 2 extends this feature by
-*navigating* the codebase efficiently.
+Read your session totals from **`/usage`** (tokens + AI credits). You built a real API slice while
+asking the model to read ~1/8 of the code and emit ~1/3 of the prose. **Same feature, a fraction of
+the tokens.** Module 2 extends this feature by *navigating* the codebase efficiently.

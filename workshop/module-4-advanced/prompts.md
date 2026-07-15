@@ -4,7 +4,8 @@ Each pair reaches the **same result**; the optimized one uses far fewer tokens. 
 (`/plan`, `/compact`, `/context`, `/model`, `/model auto`, `/subagents`, `Ctrl+T`) are real GitHub
 Copilot CLI commands — type `/help` in the CLI to see them all.
 
-Run `./workshop/module-4-advanced/measure.ps1` to see the measured delta for every scenario.
+Run each pair through Copilot and read the real token delta from your **agent debug log** / `/usage`
+(see [`MEASURING.md`](../MEASURING.md)).
 
 ---
 
@@ -117,7 +118,8 @@ Group steps by tier so each session keeps one model start-to-finish:
 Handoffs between sessions are one line of state each. Repo facts live in .github/copilot-instructions.md
 (cached), so no session re-explains the repo.
 ```
-Feel the multiplier: re-run `measure.ps1` with `$env:WS_MODEL='haiku-4.5'` then `'opus-4.8'`.
+Feel the multiplier: run the same task on `/model claude-haiku-4.5` vs `/model claude-opus-4.8` (in
+separate sessions) and compare the **AI credits** in `/usage`.
 
 ### Quality gate (both must satisfy)
 > Each **session** runs a single model start-to-finish (no mid-session tier hopping, so the cache is

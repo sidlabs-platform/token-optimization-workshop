@@ -32,14 +32,19 @@ can keep going.
 ```powershell
 # from the repo root (once for the whole workshop)
 ./scripts/setup.ps1
-node workshop/fixtures/generate.mjs
 ```
-Open the repo in the **GitHub Copilot CLI**. Two commands you'll lean on all module:
+Open the repo in the **GitHub Copilot CLI with debug logging on** so every turn records its real
+token usage:
+```powershell
+copilot --log-level all --log-dir .\copilot-logs
+```
+Two commands you'll lean on all module — and the debug log for the exact numbers:
 - `/context` — shows how full your context window is (watch this like a fuel gauge).
 - `/usage` — shows tokens/credits spent this session.
+- **agent debug log** (`./copilot-logs`) — per-request input/output/cached tokens. Full how-to:
+  [`../MEASURING.md`](../MEASURING.md).
 
-Run `./workshop/module-4-advanced/measure.ps1` at any point to see the measured deltas for all
-five exercises. Each exercise below tells you which line to read.
+You read each exercise's saving straight from these — no external script needed.
 
 ---
 
@@ -66,14 +71,11 @@ step carry **only the 2–3 files it needs**. Same feature, a fraction of the co
 3. **Execute step 1 only**, giving Copilot *only* the two files that step needs (its type + a pure
    style anchor). Run `/clear` (or start the next step in a fresh turn) before moving to step 2 so
    the previous step's context doesn't linger.
-4. **Measure:**
-   ```powershell
-   ./workshop/module-4-advanced/measure.ps1
-   ```
-   Read the **`task-breakdown`** line. It compares the **per-turn context footprint**: the mega-prompt
-   loads ~30 files up front (and re-bills them every turn), while the decomposed approach loads only
-   step 1's ~2 files now — **~90% smaller**. Each later step carries its *own* small context, so the
-   window never balloons. Same feature, a fraction of the context *at any given moment*.
+4. **Read the saving from Copilot:** run `/context` right after the ❌ mega-prompt (window balloons
+   with ~30 files) and again after loading only step 1's ~2 files — or compare the input-token entries
+   in your agent debug log. The per-turn context footprint is **~90% smaller**, and each later step
+   carries its *own* small context so the window never balloons. Same feature, a fraction of the
+   context *at any given moment*.
 
 > 💡 **Quality angle:** decomposition doesn't just save tokens — scoped steps give the model a
 > tighter target, so it wanders less and the diff is cleaner. Cheaper **and** better.
@@ -102,8 +104,10 @@ debates, and dedup debugging — none of which the escalation *store* step needs
    switch, `/clear` and start clean instead — one task = one session.)
 3. Compare the sprawling history against a good compacted summary (see
    [`prompts.md`](prompts.md#42) for what a strong summary contains).
-4. **Measure:** the **`compaction`** line — the operational summary is **~80%+ smaller** than the
-   carried-forward transcript while preserving everything needed to continue.
+4. **Read the saving from Copilot:** run `/context` before and after `/compact` (the window drops),
+   and compare `/usage` between the sprawling-history turn and the post-compact turn. The operational
+   summary is **~80%+ smaller** than the carried-forward transcript while preserving everything needed
+   to continue.
 
 **Rules of thumb (put these on the wall):**
 - One task = one session. `/clear` when you switch tasks.
@@ -150,13 +154,11 @@ crisp one-line handoffs instead.
    ([`prompts.md`](prompts.md#43)).
    **✅ Optimized:** the routed plan with one-line handoffs (stable rules live in
    `.github/copilot-instructions.md`, not re-pasted — that's the Module 2 caching lever paying off).
-3. **Measure:** the **`model-routing`** line (input saved). Then feel the **tier multiplier**:
-   ```powershell
-   $env:WS_MODEL='haiku-4.5'; ./workshop/module-4-advanced/measure.ps1   # ET collapses
-   $env:WS_MODEL='opus-4.8';  ./workshop/module-4-advanced/measure.ps1   # ET back up
-   Remove-Item Env:WS_MODEL
-   ```
-   Same tokens, wildly different ET — that's the multiplier you control by routing.
+3. **Read the saving from Copilot:** the routed workflow spends far fewer **input** tokens (no repeated
+   repo re-explanation) — compare `/usage` for the all-Opus baseline session vs the routed sessions.
+   Then feel the **tier multiplier** directly: the *same* task run on `/model claude-haiku-4.5` reports
+   a fraction of the **AI credits** in `/usage` that `/model claude-opus-4.8` does. Same work, wildly
+   different cost — that's the multiplier you control by routing (across sessions, per Exercise note above).
 
 > 💡 **Let the expensive model think. Let the cheaper model type.** One model per session; route by
 > starting the right session, not by switching mid-flight.
@@ -182,8 +184,9 @@ per-agent) sub-agent model** once, so delegated work doesn't all default to the 
 2. **❌ Baseline vs ✅ Optimized** ([`prompts.md`](prompts.md#44)): the hand-micromanaged prompt vs
    the lean "auto is on, just do the work" prompt. Notice the baseline spends tokens *talking about*
    models instead of solving the task.
-3. **Measure:** the **`auto-model`** line — dropping the per-turn model preamble saves **~50%+** of
-   that meta-prose, and you still get tier-appropriate execution.
+3. **Read the saving from Copilot:** compare `/usage` (or the input-token entries in your agent debug
+   log) between the hand-micromanaged prompt and the lean "auto is on" prompt — dropping the per-turn
+   model preamble cuts **~50%+** of that meta-prose, and you still get tier-appropriate execution.
 
 **When to still go manual:** override with `/model` for a step you *know* needs deep reasoning
 (the escalation edge-case design) or one you *know* is trivial (a rename). Auto is the default;
@@ -209,9 +212,9 @@ in `openIncidentCount`, or be excluded once escalated?* A real design question �
    rule and one-line justification"). Press **Ctrl+T** to *reveal* the reasoning display so you can
    see how much deliberation is happening. Note: Ctrl+T only toggles the **display** — you control
    the *depth* by how you phrase the ask and which model/effort you pick, not by Ctrl+T.
-3. **Measure:** the **`reasoning-depth`** line — scored with `--as-output` (4× weight). The
-   right-sized answer cuts output **~75%**, and because of the multiplier that's an outsized ET win —
-   *with the same operational conclusion*.
+3. **Read the saving from Copilot:** compare the **output** tokens in `/usage` (or your agent debug
+   log) for the exhaustive answer vs the right-sized one. The short answer cuts output **~75%**, and
+   because output is worth **4×** on ET that's an outsized win — *with the same operational conclusion*.
 
 **Depth policy (put it on the wall):**
 - **Default MEDIUM** for routine edits, filters, tests, dashboard explanations.
@@ -219,17 +222,13 @@ in `openIncidentCount`, or be excluded once escalated?* A real design question �
 - Decompose one vague HIGH task into 3–5 MEDIUM steps (that's Exercise 4.1 again).
 - When you need justification but not a chain of thought, ask for **"concise rationale."**
 
-**Checkpoint:** you can explain why trimming ~270 output tokens saved ~5,000 ET — and that the
-short answer reached the *same* recommendation.
+**Checkpoint:** you can explain why trimming ~270 output tokens is an outsized ET win (output is 4×) —
+and that the short answer reached the *same* recommendation.
 
 ---
 
 ## Wrap (5 min)
-```powershell
-./workshop/module-4-advanced/measure.ps1   # all five lines
-node bench/report.mjs                       # your Module 4 rows on the scoreboard
-```
-Five levers on the **agent loop itself**: **break it down · compact the context · route the model ·
-let auto pick · right-size the thinking.** Stack these on top of Modules 1–3 (scope, structure,
-compress, cache) and you get **better answers for a fraction of the tokens** — which is the whole
-point.
+Read your Module 4 session total from **`/usage`**. Five levers on the **agent loop itself**:
+**break it down · compact the context · route the model · let auto pick · right-size the thinking.**
+Stack these on top of Modules 1–3 (scope, structure, compress, cache) and you get **better answers for
+a fraction of the tokens** — which is the whole point.

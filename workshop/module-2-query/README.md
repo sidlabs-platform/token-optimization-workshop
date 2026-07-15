@@ -24,16 +24,13 @@
 2. **✅ Query way:** paste the optimized prompt — ask for a **map with a token budget**:
    > "In ≤12 lines, list the exact file+symbol for each hop of incident filtering
    >  (type → predicate → api parse → store apply → web). Read at most 3 files to confirm."
-3. Measure:
-   ```powershell
-   ./workshop/module-2-query/measure.ps1
-   ```
-   Look at the `query-vs-read` line — a budgeted map is **~90% cheaper** than the blind read
-   and gives you exactly the four files you need to edit next.
+3. Compare the two runs **from Copilot's own numbers** — check `/context` (the blind read balloons
+   the window; the budgeted map barely moves it) and `/usage` (or the input-token entries in your
+   agent debug log) after each. A budgeted map is **~90% cheaper** than the blind read and hands you
+   exactly the files to edit next. See [`../MEASURING.md`](../MEASURING.md).
 
 > 🔧 **Real tool:** if you installed Graphify (`pip install graphifyy`), try
 > `graphify query "incident filtering" --budget 900` for the same effect on any repo.
-> The fixture here was captured the same way.
 
 **Checkpoint:** you can name the 3 files to edit for the `acknowledged` filter *without*
 having read the whole app.
@@ -70,8 +67,8 @@ both exist; typecheck passes.
 
 **Goal:** when you *do* need to show the agent a `git diff` or a `grep` sweep, compress it first.
 
-1. Look at a raw diff vs its RTK-compressed form and measure both:
-   the `rtk-git-diff` and `rtk-grep` lines from `measure.ps1`.
+1. Feed the agent a raw diff in one turn and its RTK-compressed form in another, and compare the
+   **input tokens** Copilot reports (`/usage` or the agent debug log) for each.
 2. Discuss: dense source diffs compress **less** (~15–20%) while repetitive logs compress
    **70–95%** (you'll see that in Module 3). **The cheapest token is the one you never send** —
    prefer a diff over a full-file re-read.
@@ -96,8 +93,6 @@ both exist; typecheck passes.
 ---
 
 ## Wrap (3 min)
-```powershell
-node bench/report.mjs
-```
-You extended the feature by **querying** instead of reading, **compressing** tool output, and
-**caching** the house rules. Module 3 hardens it all with tests — efficiently.
+Check `/usage` for your running session total. You extended the feature by **querying** instead of
+reading, **compressing** tool output, and **caching** the house rules. Module 3 hardens it all with
+tests — efficiently.
